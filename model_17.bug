@@ -1,0 +1,44 @@
+
+model {
+### Priors
+# Hyperparameters for Linf 
+ln_Linf_mean <- log(60.31)
+tau2_Linf <- pow(0.364,-2)
+pi<-3.14159
+
+Linf ~ dlnorm(ln_Linf_mean,tau2_Linf)
+K~dbeta(1.386,3.869)
+
+
+# Growth parameters
+yef ~ dnorm(0.192,0.033)
+ppt ~ dnorm(-0.538,0.175)
+osp ~ dnorm(0.06,0.02)
+bet[1] ~ dnorm(1.049,0.296)
+bet[2]~ dnorm(0.293,0.038)
+
+stn[1]~ dnorm(0.028,0.024)
+stn[2]~ dnorm(-0.354,0.128)
+stn[3]~ dnorm(-0.09,0.034)
+stn[4]~ dnorm(-0.023,0.037)
+stn[5]<-0
+
+ple[1]~ dnorm(0.076,0.017)
+ple[2]~ dnorm(0.062,0.019)
+ple[3]<-0
+
+# Measurement errors
+tau2 <- pow(3.415,-2)
+
+L0_hatp ~ dnorm(L0,tau)
+log.nup <- yef*fy+stn[strain]+ple[ploidy]
+nup <- exp(log.nup)
+K_Lp <- K*nup
+
+lgmp<-ppt*map
+gmp<-exp(lgmp)
+Linf_L <- (Linf*gmp)/(1+bet[lfs]*drb+osp*dos)
+
+L_hat <- L0_hatp*exp(-K_Lp*dt)+Linf_L*(1-exp(-K_Lp*dt))
+
+}
