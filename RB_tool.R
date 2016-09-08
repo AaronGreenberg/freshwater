@@ -1,20 +1,34 @@
 library('arules')
 library('lubridate')
+rm(list=ls())
+                                        #inputs
 
+wbid="00209BRID"
+lwts=2
+kf=1.1
+snum<-100 
+straintype="Carp"
+ploidytype="Multiple"
+rda<-"2015/10/15"
+eda<-"2018/6/15"
+
+
+
+model <- function(wbid,lwts,kf,straintype,ploidytype,rda,eda)
+{
 #read lakes list
 masterlist<-read.csv("RB_tool_master_list.csv")
 
 #WBID
 #Input from tool wbid <- 00209BRID
-wbid="00209BRID"
+
 i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
 lake_area<-masterlist$AREA_HA[i1]
 
 
 #Stocking size
 #Input from tool lwts - stocking weight in g - 2
-lwts=2
-kf=1.1
+
 L0=round(((lwts/(kf/100000))^(1/3)),0)/10 #converting weight in g to length in cm
 in_hatch=read.csv('inhatchery_results.csv')
 lwd=as.character(discretize(lwts,"fixed",categories = in_hatch$cat,labels=in_hatch$labs))
@@ -22,12 +36,21 @@ ind=which(in_hatch$labs==lwd) #adding error around stocking size
 cv=ifelse(length(ind)==1,in_hatch$cv[ind],0.1)
 sig=cv*L0
 tau=1/(sig*sig)
-lfs=ifelse(lwts<=4,1,2)
-fy=lfs-1
+    lfs=ifelse(lwts<=4,"type1","type2")
+
+getfy=function(lfs)
+    {#returns NA if lfs is not "type1" or "type2"
+    switch(lfs,
+           "type1"=1,
+           "type2"=0,
+           NA)
+    }
+    #compute fy
+    fy=getfy(lfs)
 
 #Stocking density
 #Input from tool sum of numbers stocked - 1000
-snum<-1000
+
 sden<-snum/lake_area #stocking density - total numbers/area
 dens0<-(sden*L0^2)/10^5 #density expressed in NL2
 drb<-ifelse(lfs==1,dens0-0.0375,dens0-0.2)
@@ -41,14 +64,11 @@ map<-masterlist$MAP[i1]/1000-0.5796408
 #Need the following comment:
 #For strains: Blackwater=1,Carp=2,Gerrard=3,Multiple=4,Pennask=5
 #For ploidy: 3n=1,Multiple=2,2n=3
-strain=5
-ploidy=3
 
 #delta_t calculation
 #Input from tool - release date - rda<-"2015/10/15"
 #Input from tool - evaluation date eda<-"2017/6/15"
-rda<-"2015/10/15"
-eda<-"2017/6/15"
+
 x1=seq.Date(as.Date(rda),as.Date(eda),by='day')
 y1=month(x1)
 mm=mm2=vector(mode="numeric",length=12)
@@ -66,49 +86,80 @@ dt=sum(mm2)/1000
 #L_hat in the model below
 
 #jags model (does not run because all nodes are fixed)
-model {
-  ### Priors
   # Hyperparameters for Linf 
   ln_Linf_mean <- log(60.31)
-  tau2_Linf <- pow(0.364,-2)
+  tau2_Linf <- 0.364^(-2)
   pi<-3.14159
-  
-  Linf ~ dlnorm(ln_Linf_mean,tau2_Linf)
-  K~dbeta(1.386,3.869)
+  samples <- 1e5
+  Linf<-rnorm(samples,ln_Linf_mean,tau2_Linf)
+  K <- rbeta(samples,1.386,3.869)
   
   
   # Growth parameters
-  yef ~ dnorm(0.192,0.033)
-  ppt ~ dnorm(-0.538,0.175)
-  osp ~ dnorm(0.06,0.02)
-  bet[1] ~ dnorm(1.049,0.296)
-  bet[2]~ dnorm(0.293,0.038)
-  
-  stn[1]~ dnorm(0.028,0.024)
-  stn[2]~ dnorm(-0.354,0.128)
-  stn[3]~ dnorm(-0.09,0.034)
-  stn[4]~ dnorm(-0.023,0.037)
-  stn[5]<-0
-  
-  ple[1]~ dnorm(0.076,0.017)
-  ple[2]~ dnorm(0.062,0.019)
-  ple[3]<-0
+  yef <- rnorm(samples,0.192,0.033)
+  ppt <- rnorm(samples,-0.538,0.175)
+  osp <- rnorm(samples,0.06,0.02)
+  beta<-list(type1=vector(),type2=vector())
+
+  beta$type1<-rnorm(samples,1.049,0.296)
+  beta$type2<-rnorm(samples,0.293,0.038)
+
+    #Blackwater=1,Carp=2,Gerrard=3,Multiple=4,Pennask=5
+    
+  strain <- list(Blackwater=vector(),Carp=vector(),Gerrard=vector(),Multiple=vector(),Pennask=vector())
+  strain$Blackwater<-rnorm(samples,0.028,0.024)
+  strain$Carp<-rnorm(samples,-0.354,0.128)
+  strain$Gerrard<-rnorm(samples,-0.09,0.034)
+  strain$Multiple<-rnorm(samples,-0.023,0.037)
+  strain$Pennask<-1:samples*0
+
+  #n3=1,Multiple=2,n2=3
+  ploidy <- list(n3=vector(),Multiple=vector(),n2=vector())
+  ploidy$n3 <-rnorm(samples,0.076,0.017)
+  ploidy$Multiple<-rnorm(samples,0.062,0.019)
+  ploidy$n2<-1:samples*0
   
   # Measurement errors
-  tau2 <- pow(3.415,-2)
+  tau2 <- 3.415^(-2)
   
-  L0_hatp ~ dnorm(L0,tau)
-  log.nup <- yef*fy+stn[strain]+ple[ploidy]
+  L0_hatp <- rnorm(samples,L0,tau)
+  log.nup <- yef*fy+strain[[straintype]]+ploidy[[ploidytype]]
   nup <- exp(log.nup)
   K_Lp <- K*nup
   
   lgmp<-ppt*map
   gmp<-exp(lgmp)
-  Linf_L <- (Linf*gmp)/(1+bet[lfs]*drb+osp*dos)
+  Linf_L <- (Linf*gmp)/(1+beta[[lfs]]*drb+osp*dos)
   
   L_hat <- L0_hatp*exp(-K_Lp*dt)+Linf_L*(1-exp(-K_Lp*dt))
-  
 }
 
+out <- model(wbid,lwts,kf,straintype,ploidytype,rda,eda)
+
+
+plotdist <- function(dist,wbid,straintype,ploidytype,rda,eda)
+{ 
+    hist(dist,main=paste("Water body =",wbid),freq=FALSE,xlab=paste("Strain type=",straintype))
+    lines(density(dist),col="blue")
+    polygon(density(dist), col=rgb(.8,0,.1, alpha=.1), border="blue")
+    legend=paste("mean=",(signif(mean(dist),3)),"\n","sd=",(signif(sd(dist),3)))
+    legend(x="topleft",legend=legend)
+    abline(v=0,col="red")
+
+}
+
+
+
+
+plotbox <- function(dist,wbid,straintype,ploidytype,rda,eda)
+{ 
+boxplot(dist)
+}
+
+
+
+plotdist(out,wbid,straintype,ploidytype,rda,eda)
+x11()
+plotbox(out,wbid,straintype,ploidytype,rda,eda)
 
 
