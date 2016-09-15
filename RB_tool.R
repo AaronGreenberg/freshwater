@@ -3,18 +3,18 @@ library('lubridate')
 rm(list=ls())
                                         #inputs
 
-wbid="00209BRID"
+## wbid="00209BRID"
 lwts=2
 kf=1.1
-snum<-100 
-straintype="Carp"
-ploidytype="Multiple"
-rda<-"2015/10/15"
-eda<-"2018/6/15"
+## snum<-500 
+## straintype="Blackwater"
+## ploidytype="Multiple"
+## rda<-"2015/10/15"
+## eda<-"2017/6/15"
 
 
 
-model <- function(wbid,lwts,kf,straintype,ploidytype,rda,eda)
+model <- function(wbid,lwts,kf,straintype,ploidytype,rda,eda,snum)
 {
 #read lakes list
 masterlist<-read.csv("RB_tool_master_list.csv")
@@ -88,10 +88,10 @@ dt=sum(mm2)/1000
 #jags model (does not run because all nodes are fixed)
   # Hyperparameters for Linf 
   ln_Linf_mean <- log(60.31)
-  tau2_Linf <- 0.364^(-2)
+  tau2_Linf <- 0.364
   pi<-3.14159
   samples <- 1e5
-  Linf<-rnorm(samples,ln_Linf_mean,tau2_Linf)
+  Linf<-rlnorm(samples,ln_Linf_mean,tau2_Linf)
   K <- rbeta(samples,1.386,3.869)
   
   
@@ -134,17 +134,17 @@ dt=sum(mm2)/1000
   L_hat <- L0_hatp*exp(-K_Lp*dt)+Linf_L*(1-exp(-K_Lp*dt))
 }
 
-out <- model(wbid,lwts,kf,straintype,ploidytype,rda,eda)
+
 
 
 plotdist <- function(dist,wbid,straintype,ploidytype,rda,eda)
 { 
-    hist(dist,main=paste("Water body =",wbid),freq=FALSE,xlab=paste("Strain type=",straintype))
+    hist(dist,main=paste("Water body =",wbid),freq=FALSE,xlab=paste("Strain type=",straintype),ylim=c(0,1.2*max(density(dist)$y)))
     lines(density(dist),col="blue")
     polygon(density(dist), col=rgb(.8,0,.1, alpha=.1), border="blue")
-    legend=paste("mean=",(signif(mean(dist),3)),"\n","sd=",(signif(sd(dist),3)))
+    legend=paste("mean=",(signif(mean(dist),3)),"\n","sd=",(signif(sd(dist),3)),"\n","min=",(signif(min(dist),3)))
     legend(x="topleft",legend=legend)
-    abline(v=0,col="red")
+
 
 }
 
@@ -157,9 +157,5 @@ boxplot(dist)
 }
 
 
-
-plotdist(out,wbid,straintype,ploidytype,rda,eda)
-x11()
-plotbox(out,wbid,straintype,ploidytype,rda,eda)
 
 
