@@ -26,6 +26,20 @@ shinyUI(fluidPage(theme=shinytheme("flatly"),
                  "Multiple"="Multiple"
 ),inline=TRUE),
 
+          sliderInput("lwts",
+                      "lwts:",
+                      sep="",
+                      min = 1,
+                      max =4,
+                      value = 1),
+
+
+          sliderInput("kf",
+                      "kf:",
+                      sep="",
+                      min = 0.1,
+                      max =5,
+                      value = .25),
 
           sliderInput("stockdensity",
                       "Stocking Density:",

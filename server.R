@@ -3,12 +3,16 @@ library(dplyr)
 shinyServer(function(input, output){
 source("RB_tool.R")
 dataInput <- reactive({
-main <- model(input$wbid,lwts,kf,input$straintype,input$ploidy,input$dates[1],input$dates[2],input$stockdensity)
+print("input$lwts")
+print(input$lwts)
+print("input$kf")
+print(input$kf)
+main <- model(input$wbid,input$lwts,input$kf,input$straintype,input$ploidy,input$dates[1],input$dates[2],input$stockdensity)
 stockdensity=seq(1000,10000,by=1000)
 vec <- matrix(nrow=length(main),ncol=length(stockdensity))
 for(i in 1:length(stockdensity))
 {
-vec[,i] <-model(input$wbid,lwts,kf,input$straintype,input$ploidy,input$dates[1],input$dates[2],stockdensity[i])
+vec[,i] <-model(input$wbid,input$lwts,input$kf,input$straintype,input$ploidy,input$dates[1],input$dates[2],stockdensity[i])
 }
 out=list(main=main,vec=vec)
 
