@@ -14,11 +14,11 @@ kf=1.1
 
 
 
-model <- function(wbid,lwts,kf,straintype,ploidytype,rda,eda,snum)
+model <- function(wbid,lwts,straintype,ploidytype,rda,eda,snum)
 {
 #read lakes list
 masterlist<-read.csv("RB_tool_master_list.csv")
-
+kf=1.1
 #WBID
 #Input from tool wbid <- 00209BRID
 
@@ -90,7 +90,7 @@ dt=sum(mm2)/1000
   ln_Linf_mean <- log(60.31)
   tau2_Linf <- 0.364
   pi<-3.14159
-  samples <- 1e5
+  samples <- 1e3
   Linf<-rlnorm(samples,ln_Linf_mean,tau2_Linf)
   K <- rbeta(samples,1.386,3.869)
   
@@ -122,7 +122,7 @@ dt=sum(mm2)/1000
   # Measurement errors
   tau2 <- 3.415^(-2)
   
-  L0_hatp <- rnorm(samples,L0,tau)
+  L0_hatp <- rnorm(samples,L0,sig)
   log.nup <- yef*fy+strain[[straintype]]+ploidy[[ploidytype]]
   nup <- exp(log.nup)
   K_Lp <- K*nup
@@ -141,9 +141,9 @@ plotdist <- function(dist,wbid,straintype,ploidytype,rda,eda)
 { 
     hist(dist,main=paste("Water body =",wbid),freq=FALSE,xlab=paste("Strain type=",straintype),ylim=c(0,1.2*max(density(dist)$y)))
     lines(density(dist),col="blue")
-    polygon(density(dist), col=rgb(.8,0,.1, alpha=.1), border="blue")
+    polygon(density(dist), col=rgb(.8,0,.1, alpha=.1), border="grey")
     legend=paste("mean=",(signif(mean(dist),3)),"\n","sd=",(signif(sd(dist),3)),"\n","min=",(signif(min(dist),3)))
-    legend(x="topleft",legend=legend)
+    legend(x="topleft",legend=legend,bty="n")
 
 
 }
