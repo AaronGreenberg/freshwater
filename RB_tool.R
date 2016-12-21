@@ -138,18 +138,29 @@ dt=sum(mm2)/1000
 
 
 plotdist <- function(dist,wbid,straintype,ploidytype,rda,eda)
-{ 
-    hist(dist,main=paste("Water body =",wbid),freq=FALSE,xlab=paste("Strain type=",straintype),ylim=c(0,1.2*max(density(dist)$y)))
+{masterlist<-read.csv("RB_tool_master_list.csv")
+    i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
+    hist(dist,main=paste("Water body =",masterlist$GAZETTED_NAME[i1],"  ",wbid),freq=FALSE,xlab=paste("Predicted length of ",straintype, "in cm"),ylim=c(0,1.2*max(density(dist)$y)))
     lines(density(dist),col="blue")
     polygon(density(dist), col=rgb(.8,0,.1, alpha=.1), border="grey")
-    legend=paste("mean=",(signif(mean(dist),3)),"\n","sd=",(signif(sd(dist),3)),"\n","min=",(signif(min(dist),3)))
-    legend(x="topleft",legend=legend,bty="n")
 
 
 }
 
-
-
+plottable <-function(dist,wbid,straintype,ploidytype,rda,eda,snum,lwts)
+{
+    masterlist<-read.csv("RB_tool_master_list.csv")
+    i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
+    string1 <- paste("Mean Length  =",(signif(mean(dist),3)),"cm")
+    string2 <- paste("Sigma length = ",(signif(sd(dist),3)),"cm")
+    string3 <- paste("Min Length =",(signif(min(dist),3)),"cm")
+    string4 <- paste("Mean Annual Precipitation=",masterlist$MAP[i1],"mm")
+    string5 <- paste("Annual Growing Days=", masterlist$DD5[i1])
+    string6 <- paste("Size Stocked =",lwts,"cm")
+    string7 <- paste("Stocking Density =",(signif(snum/masterlist$AREA_HA[i1], 3)),"(Fish per HA)")
+    table <- HTML(paste(string1,string2,string3,string4,string5,string6,string7,sep="<br/>"))
+return(table)
+}
 
 plotbox <- function(dist,wbid,straintype,ploidytype,rda,eda)
 { 

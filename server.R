@@ -25,6 +25,13 @@ plotdist(out$main,input$wbid,input$straintype,input$ploidy,input$dates[1],input$
 })
 
 
+
+output$text <- renderUI({
+   out <- dataInput()
+plottable(out$main,input$wbid,input$straintype,input$ploidy,input$dates[1],input$dates[2],input$stockdensity,input$lwts)
+})
+
+
 output$boxPlot <- renderPlot({
     out <- dataInput()
 plotbox(out$vec,input$wbid,straintype,input$ploidy,input$dates[1],input$dates[2])

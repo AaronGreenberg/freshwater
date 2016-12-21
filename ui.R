@@ -27,24 +27,25 @@ shinyUI(fluidPage(theme=shinytheme("flatly"),
 ),inline=TRUE),
 
           sliderInput("lwts",
-                      "lwts(g):",
+                      "Stocking Weight(g):",
                       sep="",
                       min = .999,
                       max =25,
                       value = 1),
 
           sliderInput("stockdensity",
-                      "Stocking Density:",
+                      "Numbers Stocked:",
                       sep="",
                       min = 0.1,
                       max =1000,
                       value = 500),
-    dateRangeInput("dates", label = h3("Date range")),
+    dateRangeInput("dates", label = h3("Date range"),start="2016-10-15",end="2018-03-15"),
    textInput("wbid", "Water Body Id", "00001ALBN")),
     # Show a plot of the generated distribution
       mainPanel(
           tabsetPanel(type = "tabs",
                       tabPanel("Size Dist", plotOutput("countPlot")),
+                      tabPanel("Table", uiOutput("text")),
                       tabPanel("Box Plot", plotOutput("boxPlot"))
 
 )))))
