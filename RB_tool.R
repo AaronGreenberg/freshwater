@@ -141,11 +141,8 @@ plotdist <- function(dist,wbid,straintype,ploidytype,rda,eda)
 {
     masterlist<-read.csv("RB_tool_master_list.csv")
     i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
-    hist(dist,main=paste("Water body =",masterlist$GAZETTED_NAME[i1],"  ",wbid),freq=FALSE,xlab=paste("Predicted length of ",straintype, "in cm"),ylim=c(0,1.2*max(density(dist)$y)))
-    lines(density(dist),col="blue")
+    plot(density,main=paste("Water body =",masterlist$GAZETTED_NAME[i1],"  ",wbid),freq=FALSE,xlab=paste("Predicted length of ",straintype, "in cm"),ylim=c(0,1.2*max(density(dist)$y)))
     polygon(density(dist), col=rgb(.8,0,.1, alpha=.1), border="grey")
-
-
 }
 
 plottable <-function(dist,wbid,straintype,ploidytype,rda,eda,snum,lwts)
