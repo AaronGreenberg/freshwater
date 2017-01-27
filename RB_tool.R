@@ -141,8 +141,14 @@ plotdist <- function(dist,wbid,straintype,ploidytype,rda,eda)
 {
     masterlist<-read.csv("RB_tool_master_list.csv")
     i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
-    plot(density(dist),main=paste("Water body =",masterlist$GAZETTED_NAME[i1],"  ",wbid), xlab=paste("Predicted length of ",straintype, "in cm \n", "mean in red \n", "median in blue \n","1st and 9th deciles in black"),ylim=c(0,1.2*max(density(dist)$y)))
+    op <- par(mar = c(5,7,4,2) + 0.1)
+    plot(density(dist),axes=TRUE,main="",xlab="",ylab="", ylim=c(0,1.02*max(density(dist)$y)),cex.lab=1.2)
     polygon(density(dist), col=rgb(.8,0,.1, alpha=.1), border="grey")
+    title(main=paste("Water body =",masterlist$GAZETTED_NAME[i1],"  ",wbid))
+    title(xlab=paste("Predicted length of ",straintype, "in cm \n"),line=4)
+    legend("topright", paste("mean (red): \n",signif(mean(dist),3)," cm \n","median (blue): \n",
+    signif(median(dist),3)," cm \n","1st decile: \n",
+    signif(quantile(dist,prob=.1),3)," cm \n","9th decile: \n",signif(quantile(dist,prob=c(.9)),3),sep=""," cm"),bty="n")
     abline(v=mean(dist),col="red")
     abline(v=median(dist),col="blue")
     abline(v=quantile(dist,prob=c(.1,.9)),col="black")
