@@ -144,7 +144,7 @@ plotdist <- function(dist,wbid,straintype,ploidytype,rda,eda)
     plot(density(dist),main=paste("Water body =",masterlist$GAZETTED_NAME[i1],"  ",wbid), xlab=paste("Predicted length of ",straintype, "in cm"),ylim=c(0,1.2*max(density(dist)$y)))
     polygon(density(dist), col=rgb(.8,0,.1, alpha=.1), border="grey")
     abline(v=mean(dist),col="red")
-    abline(v=quantile(dist,prob=.1),col="black")
+    abline(v=quantile(dist,prob=c(.1,.9)),col="black")
 }
 
 plottable <-function(dist,wbid,straintype,ploidytype,rda,eda,snum,lwts)
