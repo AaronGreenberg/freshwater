@@ -1,8 +1,16 @@
+library(maps)
+library(mapdata)
+
+
+
+
+main <- function()
+{
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
 assessed<-scan('assessed_wbid.csv',what="character",skip=1)
 lakepars<-read.csv('model_17post_lakepars.csv')
 mainpars<-read.csv('model_17post_mainpars.csv')
-library(maps)
+
 
 gnpars<-match(haspclist$WATERBODY_IDENTIFIER,assessed)
 vK=vLinf=vector(length=nrow(haspclist))
@@ -73,10 +81,16 @@ lt_ye<-L0*exp(-vKye*dt_ye)+matLinf_ye*(1-exp(-vKye*dt_ye))
 
 colnames(lt_fry)<-paste0("sden_",sden)
 colnames(lt_ye)<-paste0("sden_",sden)
+    out <- list(lt_fry=lt_fry, lt_ye=lt_ye)
+    return(out)
+}
 
-
+                                        #jpeg("img1.jpg",width=9,height=6,units="in",res=600)
+plotfry <- function(inp)
+{
+haspclist<-read.csv("RB_haspc2017_master_list.csv")
 lonlim<-c(-130,-115)#range(c(obj@lakex,obj@pcx))+c(0.5,-0.5)
-latlim<-c(49,56.5)#range(c(obj@lakey,obj@pcy))+c(-0.5,0.5)
+latlim<-c(48.5,56.5)#range(c(obj@lakey,obj@pcy))+c(-0.5,0.5)
 # lcol<-rep("#99999970",obj@nl)
 # llcol=rep('#99999970',obj@nl)
 
@@ -84,21 +98,39 @@ lakepoints<-data.frame(X=haspclist$LONGITUDE,Y=haspclist$LATITUDE)
 EID=seq(1:nrow(haspclist))
 
 
-jpeg("img1.jpg",width=9,height=6,units="in",res=600)
 plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
 cexy=lt_fry[,1]/10
-cols<-ifelse(lt_fry[,5]<25,"red",ifelse(lt_fry[,1]<35,"orange",ifelse(lt_fry[,1]<40,"green","lightsteelblue")))
+cols<-ifelse(inp$lt_fry[,5]<25,"red",ifelse(inp$lt_fry[,1]<35,"orange",ifelse(inp$lt_fry[,1]<40,"green","lightsteelblue")))
+text(-121.4425,49.3830, "Hope",cex=.5)
+text(-122.768215,53.912015, "Prince George",cex=.5)
 points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=".",cex=3,col=cols)
-dev.off()
+}
+#dev.off()
 
-jpeg("img2.jpg",width=9,height=6,units="in",res=600)
+                                        #jpeg("img2.jpg",width=9,height=6,units="in",res=600)
+
+plotye <- function(inp)
+{
+haspclist<-read.csv("RB_haspc2017_master_list.csv")
 plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
 cexy=lt_fry[,1]/10
 cols<-ifelse(lt_ye[,5]<25,"red",ifelse(lt_ye[,1]<35,"orange",ifelse(lt_ye[,1]<40,"green","lightsteelblue")))
+text(-121.4425,49.3830, "Hope",cex=.5)
+text(-122.768215,53.912015, "Prince George",cex=.5)
 points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=".",cex=3,col=cols)
-dev.off()
+}
 
-write.csv(lt_fry,"Predicted size at age for fry stockings.csv")
-write.csv(lt_ye,"Predicted size at age for fry stockings.csv")
+s <- main()
+x11
+plotfry(s)
+print("hum")
+x11
+plotye(s)
+
+## print(lt_fry)
+## print(lt_ye)
+
+## write.csv(lt_fry,"Predicted size at age for fry stockings.csv")
+## write.csv(lt_ye,"Predicted size at age for fry stockings.csv")
