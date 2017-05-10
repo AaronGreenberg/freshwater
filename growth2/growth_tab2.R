@@ -1,14 +1,22 @@
 library('arules')
 library('lubridate')
 
+#Input from tool wbid <- 00209BRID
+wbid="00372KOTR" #Region and names instead of WBID
+
+strain=2
+ploidy=3
+lfs=1
+
+main<-function(wbid,strain,ploidy,lfs)
+{
 #read lakes list
 masterlist<-read.csv("RB_tool_master_list.csv")
 mainpars<-read.csv('model_17_mainpars.csv')
 lakepars<-read.csv('model_17_lakepars.csv')
 
 #WBID
-#Input from tool wbid <- 00209BRID
-wbid="00372KOTR" #Region and names instead of WBID
+
 i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
 lake_area<-masterlist$AREA_HA[i1]
 assessed<-read.csv('assessed_wbid.csv',colClasses=c("character"))
@@ -46,10 +54,6 @@ drbfry<-((sden*L0[1]^2)/10^5)-0.0375 #density expressed in NL2
 drbye<-((sden*L0[2]^2)/10^5)-0.2
 dos<-0
 age=seq(2,6)
-
-strain=6
-ploidy=3
-lfs=1
 fy<-lfs-1
 
 #delta_t calculation #no inputs from gui
@@ -84,9 +88,7 @@ colnames(L_hat_fry)<-paste0("age_",age)
 rownames(L_hat_fry)<-paste0("sden_",sden)
 
 
-strain=6
-ploidy=3
-lfs=2
+
 fy<-lfs-1
 
 
@@ -115,20 +117,37 @@ for(i in 1:length(dtye))
   L_hat_ye[,i] <- L0[2]*exp(-K_Lpye*dtye[i])+Linf_Lye*(1-exp(-K_Lpye*dtye[i]))
 }
 colnames(L_hat_ye)<-paste0("age_",age)
-rownames(L_hat_ye)<-paste0("sden_",sden)
-#Output 2 figures one for fry and one for yearlings
+    rownames(L_hat_ye)<-paste0("sden_",sden)
 
+out=list(L_hat_ye=L_hat_ye,L_hat_fry=L_hat_fry)
+}
+
+
+###
+#Output 2 figures one for fry and one for yearlings
+plottab2 <- function(L)
+{
+    
 par(mfrow=c(1,2))
-  plot(age,L_hat_fry[1,],type='l',ylim=c(10,70),las=1) 
-  lines(age,L_hat_fry[2,])
-  lines(age,L_hat_fry[3,])
-  lines(age,L_hat_fry[4,])
-  lines(age,L_hat_fry[5,])
-  
-  plot(age,L_hat_ye[1,],type='l',ylim=c(10,70),las=1) 
-  lines(age,L_hat_ye[2,])
-  lines(age,L_hat_ye[3,])
-  lines(age,L_hat_ye[4,])
-  lines(age,L_hat_ye[5,])
-  
+m1 <- max(max(L$L_hat_fry[1,]),max(L$L_hat_fry[2,]),max(L$L_hat_fry[3,]),max(L$L_hat_fry[3,]),max(L$L_hat_fry[4,]),max(L$L_hat_fry[5,]))
+m1 <- m1+5
+m1b <- min(min(L$L_hat_fry[1,]),min(L$L_hat_fry[2,]),min(L$L_hat_fry[3,]),min(L$L_hat_fry[3,]),min(L$L_hat_fry[4,]),min(L$L_hat_fry[5,]))
+m1b <- m1b-1    
+  plot(age,L$L_hat_fry[1,],type='o',ylim=c(m1b,m1),las=1,cex=.2,xlab="Age", ylab=" Fry",main="L_hat") 
+  lines(age,L$L_hat_fry[2,],type='o',cex=.2)
+  lines(age,L$L_hat_fry[3,],type='o',cex=.2)
+  lines(age,L$L_hat_fry[4,],type='o',cex=.2)
+  lines(age,L$L_hat_fry[5,],type='o',cex=.2)
+  m2 <- max(max(L$L_hat_ye[1,]),max(L$L_hat_ye[2,]),max(L$L_hat_ye[3,]),max(L$L_hat_ye[3,]),max(L$L_hat_ye[4,]),max(L$L_hat_ye[5,]))
+m2 <- m2+5
+m2b <- min(min(L$L_hat_ye[1,]),min(L$L_hat_ye[2,]),min(L$L_hat_ye[3,]),min(L$L_hat_ye[3,]),min(L$L_hat_ye[4,]),min(L$L_hat_ye[5,]))
+m2b <- m2b-1    
+  plot(age,L$L_hat_ye[1,],type='o',ylim=c(m2b,m2),las=1,cex=.2,xlab="Age", ylab="Yearling",main="L_hat") 
+  lines(age,L$L_hat_ye[2,],type='o',cex=.2)
+  lines(age,L$L_hat_ye[3,],type='o',cex=.2)
+  lines(age,L$L_hat_ye[4,],type='o',cex=.2)
+  lines(age,L$L_hat_ye[5,],type='o',cex=.2)
+}  
 #sliding label
+s=main(wbid,strain,ploidy,lfs)
+plottab2(s)
