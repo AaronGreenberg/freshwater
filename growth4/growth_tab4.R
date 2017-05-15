@@ -3,7 +3,7 @@ library(mapdata)
 
 
 
-
+#main <- sden and eda fry and yearling 
 main <- function()
 {
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
@@ -100,7 +100,7 @@ EID=seq(1:nrow(haspclist))
 
 plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
-cexy=lt_fry[,1]/10
+cexy=inp$lt_fry[,1]/10
 cols<-ifelse(inp$lt_fry[,5]<25,"red",ifelse(inp$lt_fry[,1]<35,"orange",ifelse(inp$lt_fry[,1]<40,"green","lightsteelblue")))
 text(-121.4425,49.3830, "Hope",cex=.5)
 text(-122.768215,53.912015, "Prince George",cex=.5)
@@ -115,8 +115,8 @@ plotye <- function(inp)
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
 plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
-cexy=lt_fry[,1]/10
-cols<-ifelse(lt_ye[,5]<25,"red",ifelse(lt_ye[,1]<35,"orange",ifelse(lt_ye[,1]<40,"green","lightsteelblue")))
+cexy=inp$lt_fry[,1]/10
+cols<-ifelse(inp$lt_ye[,5]<25,"red",ifelse(inp$lt_ye[,1]<35,"orange",ifelse(lt_ye[,1]<40,"green","lightsteelblue")))
 text(-121.4425,49.3830, "Hope",cex=.5)
 text(-122.768215,53.912015, "Prince George",cex=.5)
 points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=".",cex=3,col=cols)

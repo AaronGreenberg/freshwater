@@ -1,6 +1,7 @@
 library(maps)
 library(mapdata)
 
+#main inputs eda, target 
 main <- function()
 {            
 haspclist<-read.csv("RB_haspc2017_master_list.csv")

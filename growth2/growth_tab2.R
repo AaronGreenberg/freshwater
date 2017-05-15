@@ -127,7 +127,7 @@ out=list(L_hat_ye=L_hat_ye,L_hat_fry=L_hat_fry)
 #Output 2 figures one for fry and one for yearlings
 plottab2 <- function(L)
 {
-    
+    age=seq(2,6)
 par(mfrow=c(1,2))
 m1 <- max(max(L$L_hat_fry[1,]),max(L$L_hat_fry[2,]),max(L$L_hat_fry[3,]),max(L$L_hat_fry[3,]),max(L$L_hat_fry[4,]),max(L$L_hat_fry[5,]))
 m1 <- m1+5
@@ -148,6 +148,7 @@ m2b <- m2b-1
   lines(age,L$L_hat_ye[4,],type='o',cex=.2)
   lines(age,L$L_hat_ye[5,],type='o',cex=.2)
 }  
-#sliding label
+#fix yaxis limits such that they are the same for each plot.                                         #sliding label
+# write a function that outputs csvs of L_hat_ye and L_hat_fry
 s=main(wbid,strain,ploidy,lfs)
 plottab2(s)
