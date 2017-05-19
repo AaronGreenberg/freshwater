@@ -1,10 +1,11 @@
 library(maps)
 library(mapdata)
 
-
+sden<-c(20,50,100,200,500)
+eda<-"2018/6/15"
 
 #main <- sden and eda fry and yearling 
-main <- function()
+main <- function(sden=sden, eda=eda)
 {
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
 assessed<-scan('assessed_wbid.csv',what="character",skip=1)
@@ -24,7 +25,7 @@ for(i in 1:length(gnpars))
 lwts=c(2,10)
 kf=1.1
 L0=round(((lwts/(kf/100000))^(1/3)),0)/10 #converting weight in g to length in cm
-sden<-c(20,50,100,200,500)
+
 drbfry<-((sden*L0[1]^2)/10^5)-0.0375 #density expressed in NL2
 drbye<-((sden*L0[2]^2)/10^5)-0.2
 beta_fry=1.169
@@ -51,7 +52,7 @@ library('lubridate')
 
 rda_fry<-"2015/10/15"
 rda_ye<-"2016/06/01"
-eda<-"2018/6/15"
+
 x1=seq.Date(as.Date(rda_fry),as.Date(eda),by='day')
 y1=month(x1)
 mm=vector(mode="numeric",length=12)
@@ -86,7 +87,7 @@ colnames(lt_ye)<-paste0("sden_",sden)
 }
 
                                         #jpeg("img1.jpg",width=9,height=6,units="in",res=600)
-plotfry <- function(inp)
+plotfry <- function(inp,stock)
 {
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
 lonlim<-c(-130,-115)#range(c(obj@lakex,obj@pcx))+c(0.5,-0.5)
@@ -100,8 +101,8 @@ EID=seq(1:nrow(haspclist))
 
 plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
-cexy=inp$lt_fry[,1]/10
-cols<-ifelse(inp$lt_fry[,5]<25,"red",ifelse(inp$lt_fry[,1]<35,"orange",ifelse(inp$lt_fry[,1]<40,"green","lightsteelblue")))
+cexy=inp$lt_fry[,stock]/10
+cols<-ifelse(inp$lt_fry[,stock]<25,"red",ifelse(inp$lt_fry[,stock]<35,"orange",ifelse(inp$lt_fry[,stock]<40,"green","lightsteelblue")))
 text(-121.4425,49.3830, "Hope",cex=.5)
 text(-122.768215,53.912015, "Prince George",cex=.5)
 points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=".",cex=3,col=cols)
@@ -110,24 +111,34 @@ points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=".",cex=3,col=cols)
 
                                         #jpeg("img2.jpg",width=9,height=6,units="in",res=600)
 
-plotye <- function(inp)
+plotye <- function(inp,stock)
 {
+
+haspclist<-read.csv("RB_haspc2017_master_list.csv")
+lonlim<-c(-130,-115)#range(c(obj@lakex,obj@pcx))+c(0.5,-0.5)
+latlim<-c(48.5,56.5)#range(c(obj@lakey,obj@pcy))+c(-0.5,0.5)
+# lcol<-rep("#99999970",obj@nl)
+# llcol=rep('#99999970',obj@nl)
+
+lakepoints<-data.frame(X=haspclist$LONGITUDE,Y=haspclist$LATITUDE)
+EID=seq(1:nrow(haspclist))
+
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
 plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
-cexy=inp$lt_fry[,1]/10
-cols<-ifelse(inp$lt_ye[,5]<25,"red",ifelse(inp$lt_ye[,1]<35,"orange",ifelse(lt_ye[,1]<40,"green","lightsteelblue")))
+cexy=inp$lt_fry[,stock]/10
+cols<-ifelse(inp$lt_ye[,stock]<25,"red",ifelse(inp$lt_ye[,stock]<35,"orange",ifelse(inp$lt_ye[,stock]<40,"green","lightsteelblue")))
 text(-121.4425,49.3830, "Hope",cex=.5)
 text(-122.768215,53.912015, "Prince George",cex=.5)
 points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=".",cex=3,col=cols)
 }
 
-s <- main()
-x11
-plotfry(s)
+s <- main(sden=sden,eda=eda)
+x11()
+plotfry(s,2)
 print("hum")
-x11
-plotye(s)
+x11()
+plotye(s,1)
 
 ## print(lt_fry)
 ## print(lt_ye)
