@@ -131,18 +131,23 @@ plottab2 <- function(L)
 par(mfrow=c(1,2))
 m1 <- max(max(L$L_hat_fry[1,]),max(L$L_hat_fry[2,]),max(L$L_hat_fry[3,]),max(L$L_hat_fry[3,]),max(L$L_hat_fry[4,]),max(L$L_hat_fry[5,]))
 m1 <- m1+5
+m2 <- max(max(L$L_hat_ye[1,]),max(L$L_hat_ye[2,]),max(L$L_hat_ye[3,]),max(L$L_hat_ye[3,]),max(L$L_hat_ye[4,]),max(L$L_hat_ye[5,]))
+m2 <- m2+5
+may=max(c(m2,m1))
 m1b <- min(min(L$L_hat_fry[1,]),min(L$L_hat_fry[2,]),min(L$L_hat_fry[3,]),min(L$L_hat_fry[3,]),min(L$L_hat_fry[4,]),min(L$L_hat_fry[5,]))
-m1b <- m1b-1    
-  plot(age,L$L_hat_fry[1,],type='o',ylim=c(m1b,m1),las=1,cex=.2,xlab="Age", ylab=" Fry",main="L_hat") 
+m1b <- m1b-1
+m2b <- min(min(L$L_hat_ye[1,]),min(L$L_hat_ye[2,]),min(L$L_hat_ye[3,]),min(L$L_hat_ye[3,]),min(L$L_hat_ye[4,]),min(L$L_hat_ye[5,]))
+m2b <- m2b-1    
+my=min(c(m2b,m1b))
+
+
+  plot(age,L$L_hat_fry[1,],type='o',ylim=c(my,may),las=1,cex=.2,xlab="Age", ylab=" Fry",main="L_hat") 
   lines(age,L$L_hat_fry[2,],type='o',cex=.2)
   lines(age,L$L_hat_fry[3,],type='o',cex=.2)
   lines(age,L$L_hat_fry[4,],type='o',cex=.2)
   lines(age,L$L_hat_fry[5,],type='o',cex=.2)
-  m2 <- max(max(L$L_hat_ye[1,]),max(L$L_hat_ye[2,]),max(L$L_hat_ye[3,]),max(L$L_hat_ye[3,]),max(L$L_hat_ye[4,]),max(L$L_hat_ye[5,]))
-m2 <- m2+5
-m2b <- min(min(L$L_hat_ye[1,]),min(L$L_hat_ye[2,]),min(L$L_hat_ye[3,]),min(L$L_hat_ye[3,]),min(L$L_hat_ye[4,]),min(L$L_hat_ye[5,]))
-m2b <- m2b-1    
-  plot(age,L$L_hat_ye[1,],type='o',ylim=c(m2b,m2),las=1,cex=.2,xlab="Age", ylab="Yearling",main="L_hat") 
+
+  plot(age,L$L_hat_ye[1,],type='o',ylim=c(my,may),las=1,cex=.2,xlab="Age", ylab="Yearling",main="L_hat") 
   lines(age,L$L_hat_ye[2,],type='o',cex=.2)
   lines(age,L$L_hat_ye[3,],type='o',cex=.2)
   lines(age,L$L_hat_ye[4,],type='o',cex=.2)
