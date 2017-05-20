@@ -4,13 +4,6 @@ library(mapdata)
 sden<-c(20,50,100,200,500)
 eda<-"2018/6/15"
 
-#main <- sden and eda fry and yearling 
-<<<<<<< HEAD
-sden<-c(20,50,100,200,500)
-eda<-"2018/6/15"
-
-=======
->>>>>>> b9914721863103d41a583def6d4bb85a476ac847
 main <- function(sden=sden, eda=eda)
 {
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
@@ -129,20 +122,11 @@ latlim<-c(48.5,56.5)#range(c(obj@lakey,obj@pcy))+c(-0.5,0.5)
 lakepoints<-data.frame(X=haspclist$LONGITUDE,Y=haspclist$LATITUDE)
 EID=seq(1:nrow(haspclist))
 
-<<<<<<< HEAD
-
-=======
->>>>>>> b9914721863103d41a583def6d4bb85a476ac847
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
 plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="",main="Yearlings")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
-<<<<<<< HEAD
-cexy=inp$lt_fry[,1]/10
-cols<-ifelse(inp$lt_ye[,5]<25,"red",ifelse(inp$lt_ye[,1]<35,"orange",ifelse(inp$lt_ye[,1]<40,"green","lightsteelblue")))
-=======
 cexy=inp$lt_fry[,stock]/10
 cols<-ifelse(inp$lt_ye[,stock]<25,"red",ifelse(inp$lt_ye[,stock]<35,"orange",ifelse(inp$lt_ye[,stock]<40,"green","lightsteelblue")))
->>>>>>> b9914721863103d41a583def6d4bb85a476ac847
 text(-121.4425,49.3830, "Hope",cex=.5)
 text(-122.768215,53.912015, "Prince George",cex=.5)
 points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=".",cex=3,col=cols)
@@ -150,17 +134,10 @@ points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=".",cex=3,col=cols)
 
 s <- main(sden=sden,eda=eda)
 x11()
-<<<<<<< HEAD
-plotfry(s)
-print("hum")
-x11()
-plotye(s)
-=======
 plotfry(s,2)
 print("hum")
 x11()
 plotye(s,1)
->>>>>>> b9914721863103d41a583def6d4bb85a476ac847
 
 ## print(lt_fry)
 ## print(lt_ye)
