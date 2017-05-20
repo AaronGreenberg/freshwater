@@ -1,6 +1,8 @@
 library('arules')
 library('lubridate')
 
+
+
 mainpars<-read.csv('model_17_mainpars.csv')
 K<-mainpars[,1];Linf<-mainpars[,2]
 
@@ -70,11 +72,11 @@ test <- data.frame(
 colors <- colorRampPalette(c("blue", "green", "yellow", "red"))(42)
 fryplot<-ggplot(test, aes(x=x, y=y, fill = z1)) + geom_tile()+ 
   scale_fill_gradient(low = "white",high = "steelblue")+facet_wrap(~w)
-fryplot
+plot(fryplot)
 
 yrplot<-ggplot(test, aes(x=x, y=y, fill = z2)) + geom_tile()+ 
   scale_fill_gradient(low = "white",high = "steelblue")+facet_wrap(~w)
-yrplot
+plot(yrplot)
 
 
 
