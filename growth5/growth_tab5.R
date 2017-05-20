@@ -1,8 +1,12 @@
 library(maps)
 library(mapdata)
 
-#main inputs eda, target 
-main <- function()
+#main inputs eda, target
+eda<-"2018/6/15"
+
+target<-100 #input from gui
+
+main <- function(eda=eda, target=target)
 {            
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
 assessed<-scan('assessed_wbid.csv',what="character",skip=1)
@@ -32,7 +36,7 @@ library('lubridate')
 
 rda_fry<-"2015/10/15"
 rda_ye<-"2016/06/01"
-eda<-"2018/6/15"
+
 x1=seq.Date(as.Date(rda_fry),as.Date(eda),by='day')
 y1=month(x1)
 mm=vector(mode="numeric",length=12)
@@ -56,7 +60,6 @@ for(j in 1:12)
 }
 dt_ye=rowSums(mm2)/1000
 
-target<-40 #input from gui
 #region
 s1=vLinf*exp(ppt*(haspclist$MAP/1000-0.5796408))*(1-exp(-vK*dt_fry))
 s2=s1/(target-(L0[1]*exp(-vK*dt_fry)))
@@ -92,7 +95,7 @@ EID=seq(1:nrow(haspclist))
 plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
 cols<-ifelse(inp$s6_fry<=0,"grey",ifelse(inp$s6_fry<100,"red",ifelse(inp$s6_fry<200,"orange",ifelse(inp$s6_fry<500,"green","blue"))))
-points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=1,cex=1,col=cols)
+points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=16,cex=1,col=cols)
 #dev.off()
 }
 
@@ -111,13 +114,13 @@ EID=seq(1:nrow(haspclist))
 #jpeg("img_ye.jpg",width=9,height=6,units="in",res=600)
 plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
-cols<-ifelse(inp$s6_ye<=0,"grey",ifelse(inp$s6_ye<100,"red",ifelse(inp$s6_ye<200,"orange",ifelse(s6_ye<500,"green","blue"))))
-points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=1,cex=1,col=cols)
+cols<-ifelse(inp$s6_ye<=0,"grey",ifelse(inp$s6_ye<100,"red",ifelse(inp$s6_ye<200,"orange",ifelse(inp$s6_ye<500,"green","blue"))))
+points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=16,cex=1,col=cols)
 
 }
 
 
-s <- main()
+s <- main(eda=eda,target=target)
 plots6ye(s)
 x11()
 plots6fry(s)
