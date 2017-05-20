@@ -289,7 +289,7 @@ tab1(s$L_hat)
 fig1(s$L_hat,s2$root,10)
 
 
-s2=main3(wbid,lwts,kf,13,strain,ploidy,4)
+s2=main3(wbid,lwts,kf,9,strain,ploidy,2)
 s=main(wbid,lwts,kf,s2$root,strain,ploidy)
 tab1(s$L_hat)
-fig1(s$L_hat,s2$root,13)
+fig1(s$L_hat,s2$root,9)
