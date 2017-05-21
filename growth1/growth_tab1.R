@@ -279,15 +279,23 @@ s=main(wbid,lwts,kf,sden,strain,ploidy)
 
 fig1(s$L_hat,sden)
 tab1(s$L_hat)
+
+#main 3 does the inverse!
+
+
+
+## make it so that age 3 has mean size 14 cm
 s2=main3(wbid,lwts,kf,14,strain,ploidy,3)
 s=main(wbid,lwts,kf,s2$root,strain,ploidy)
 tab1(s$L_hat)
 
-s2=main3(wbid,lwts,kf,10,strain,ploidy,2)
+## make it so that age three has mean 10
+s2=main3(wbid,lwts,kf,10,strain,ploidy,3)
 s=main(wbid,lwts,kf,s2$root,strain,ploidy)
 tab1(s$L_hat)
 fig1(s$L_hat,s2$root,10)
 
+## make it so that age two has mean 9
 
 s2=main3(wbid,lwts,kf,9,strain,ploidy,2)
 s=main(wbid,lwts,kf,s2$root,strain,ploidy)
