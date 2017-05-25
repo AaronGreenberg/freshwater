@@ -1,27 +1,6 @@
 library('arules')
 library('lubridate')
-#WBID _ Choose from Creation of drop down menu for region and name of lake
-#Input from tool wbid <- 00209BRID
-wbid="00372KOTR"
-#Stocking size
-#Input from tool lwts - stocking weight in g - 2
-lwts=2
-kf=1.1
-#Stocking density
-#Input from tool sum of numbers stocked - 1000 #stocking density unlike stocking numbers
-sden<-3000
-
-
-#For ploidy: 3n=1,Multiple=2,2n=3
-strain=2
-ploidy=3
-
-#Strain and Ploidy input
-#Input from tool for strain and ploidy
-#Need the following comment:
-#For strains: #Blackwater=1, Carp=2, Fraser Valley = 3, Gerrard=4, Multiple=5, Pennask=6
-
-
+rm(list=ls())
 
 main <- function(wbid,lwts,kf,sden,strain,ploidy)
 {            
@@ -30,12 +9,16 @@ masterlist<-read.csv("RB_tool_master_list.csv")
 mainpars_post<-read.csv('model_17post_mainpars.csv')
 lakepars_post<-read.csv('model_17post_lakepars.csv')
 
-#parameters
+ #parameters
 
-bet_post<-new('list');ple_post<-new('list');stn_post<-new('list')
+bet_post<-new('list');
+ple_post<-new('list');
+stn_post<-new('list')
+
 bet_post[[1]]<-mainpars_post$bet1
 bet_post[[2]]<-mainpars_post$bet2
 osp_post<-mainpars_post$osp
+
 ple_post[[1]]<-mainpars_post$ple1
 ple_post[[2]]<-mainpars_post$ple2
 ple_post[[3]]<-0
@@ -47,6 +30,7 @@ stn_post[[3]]<-mainpars_post$stn3
 stn_post[[4]]<-mainpars_post$stn4
 stn_post[[5]]<-mainpars_post$stn5
 stn_post[[6]]<-0
+
 yef_post<-mainpars_post$yef
 
 
@@ -101,15 +85,20 @@ for(i in 1:length(eda))
 Linf_L <- (Linf*exp(ppt_post*map))/(1+bet_post[[lfs]]*drb+osp_post*dos)
 K_Lp <- K*exp(yef_post*fy+stn_post[[strain]]+ple_post[[ploidy]])
 L_hat<-matrix(data=0,nrow=length(Linf),ncol=length(eda))
+print("silly strain")
+print(strain)
+print(stn_post[[strain]])
+print(K_Lp)
+
 for(i in 1:length(eda))
 {
   L_hat[,i] <- L0_vec*exp(-K_Lp*dt[i])+Linf_L*(1-exp(-K_Lp*dt[i]))
 }
 age=seq(2,6)
 colnames(L_hat)<-paste0("age_",age)
-                                        #figure output
-    out=list(L_hat=L_hat)
-    
+print("Silly idiot")
+print(head(L_hat))
+out=(L_hat)
 }
 
 
@@ -197,7 +186,8 @@ for(i in 1:length(eda))
 age=seq(2,6)
 colnames(L_hat)<-paste0("age_",age)
                                         #figure output
-    out=list(L_hat=L_hat)
+print(head(L_hat))
+    out=(L_hat)
     
 }
 
@@ -212,7 +202,7 @@ main3 <-  function(wbid,lwts,kf,target,strain,ploidy,age)
     lakepars_post<-read.csv('model_17post_lakepars.csv')
 age=age-1 
     
-    f <- function(sden,age){mean(main2(wbid,lwts,kf,sden,strain,ploidy,assessed,in_hatch,masterlist,mainpars_post,lakepars_post)$L_hat[,age])-target}
+    f <- function(sden,age){mean(main2(wbid,lwts,kf,sden,strain,ploidy,assessed,in_hatch,masterlist,mainpars_post,lakepars_post)[,age])-target}
   z <- tryCatch(
         {
             
@@ -243,7 +233,7 @@ fig1 <- function(L_hat,density,target)
     means=round(apply(L_hat,2,mean),1)
     sds=round(apply(L_hat,2,sd),2)
     boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(min(means-5*sds),
-   max(means+5*sds)))
+    max(means+5*sds)))
     text(1:6, means+5*sds, paste("mu=",means))
     text(1:6, means-5*sds, paste("sd=",sds))
     if(!missing(target))
@@ -274,30 +264,52 @@ tab1 <- function(L_hat)
 
 #myres<-data.frame(age=age,means=means,sds=sds,qs=t(round(qs,1)))
                   
-#Please include summaries shown on tab of the tool                  
-s=main(wbid,lwts,kf,sden,strain,ploidy)
+## #Please include summaries shown on tab of the tool                  
+## #WBID _ Choose from Creation of drop down menu for region and name of lake
+## #Input from tool wbid <- 00209BRID
+## wbid="00372KOTR"
+## #Stocking size
+## #Input from tool lwts - stocking weight in g - 2
+## lwts=2
+## kf=1.1
+## #Stocking density
+## #Input from tool sum of numbers stocked - 1000 #stocking density unlike stocking numbers
+## sden<-3000
 
-fig1(s$L_hat,sden)
-tab1(s$L_hat)
 
-#main 3 does the inverse!
+## #For ploidy: 3n=1,Multiple=2,2n=3
+## strain=2
+## ploidy=3
+
+## #Strain and Ploidy input
+## #Input from tool for strain and ploidy
+## #Need the following comment:
+## #For strains: #Blackwater=1, Carp=2, Fraser Valley = 3, Gerrard=4, Multiple=5, Pennask=6
+
+
+## s=main(wbid,lwts,kf,sden,strain,ploidy)
+
+## fig1(s,sden)
+## tab1(s )
+
+## ## #main 3 does the inverse!
 
 
 
-## make it so that age 3 has mean size 14 cm
-s2=main3(wbid,lwts,kf,14,strain,ploidy,3)
-s=main(wbid,lwts,kf,s2$root,strain,ploidy)
-tab1(s$L_hat)
+## ## make it so that age 3 has mean size 14 cm
+## s2=main3(wbid,lwts,kf,14,strain,ploidy,3)
+## s=main(wbid,lwts,kf,s2$root,strain,ploidy)
+## tab1(s$L_hat)
 
-## make it so that age three has mean 10
-s2=main3(wbid,lwts,kf,10,strain,ploidy,3)
-s=main(wbid,lwts,kf,s2$root,strain,ploidy)
-tab1(s$L_hat)
-fig1(s$L_hat,s2$root,10)
+## ## make it so that age three has mean 10
+## s2=main3(wbid,lwts,kf,10,strain,ploidy,3)
+## s=main(wbid,lwts,kf,s2$root,strain,ploidy)
+## tab1(s$L_hat)
+## fig1(s$L_hat,s2$root,10)
 
-## make it so that age two has mean 9
+## ## make it so that age two has mean 9
 
-s2=main3(wbid,lwts,kf,9,strain,ploidy,2)
-s=main(wbid,lwts,kf,s2$root,strain,ploidy)
-tab1(s$L_hat)
-fig1(s$L_hat,s2$root,9)
+## s2=main3(wbid,lwts,kf,9,strain,ploidy,2)
+## s=main(wbid,lwts,kf,s2$root,strain,ploidy)
+## tab1(s$L_hat)
+## fig1(s$L_hat,s2$root,9)
