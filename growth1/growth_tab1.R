@@ -22,7 +22,7 @@ osp_post<-mainpars_post$osp
 ple_post[[1]]<-mainpars_post$ple1
 ple_post[[2]]<-mainpars_post$ple2
 ple_post[[3]]<-0
-ppt_post <-	mainpars_post$
+ppt_post <-	mainpars_post$ppt
 
 stn_post[[1]]<-mainpars_post$stn1
 stn_post[[2]]<-mainpars_post$stn2
@@ -117,7 +117,7 @@ osp_post<-mainpars_post$osp
 ple_post[[1]]<-mainpars_post$ple1
 ple_post[[2]]<-mainpars_post$ple2
 ple_post[[3]]<-0
-ppt_post <-	mainpars_post$
+ppt_post <-	mainpars_post$ppt
 
 stn_post[[1]]<-mainpars_post$stn1
 stn_post[[2]]<-mainpars_post$stn2
@@ -232,15 +232,15 @@ fig1 <- function(L_hat,density,target)
 
     means=round(apply(L_hat,2,mean),1)
     sds=round(apply(L_hat,2,sd),2)
-    boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(min(means-5*sds),
-    max(means+5*sds)))
+    boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(0,
+    max(means+8*sds)),frame=FALSE)
     text(1:6, means+5*sds, paste("mu=",means))
     text(1:6, means-5*sds, paste("sd=",sds))
     if(!missing(target))
     {
         abline(h=target,col="red")
     }
-    legend("topleft",legend=paste("Stocking Density:=",signif(density,4)))
+    legend("topleft",legend=paste("Stocking Density:=",signif(density,4)),bty="n")
 #age should be 2 to 6
 }
 
