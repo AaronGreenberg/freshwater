@@ -34,7 +34,7 @@ shinyUI(fluidPage(theme=shinytheme("flatly"),
                       value = 1),
 
           sliderInput("stockdensity",
-                      "Numbers Stocked:",
+                      "Stocked Density:",
                       sep="",
                       min = 0.1,
                       max =1000,
