@@ -227,15 +227,19 @@ return(z)
 }
 
 
-fig1 <- function(L_hat,density,target)
+fig1 <- function(L_hat,wbid,density,target)
 {
-
+    masterlist<-read.csv("RB_tool_master_list.csv")
+    i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
+    print("yo")
+    print("wbid")
+    print(wbid)
     means=round(apply(L_hat,2,mean),1)
     sds=round(apply(L_hat,2,sd),2)
-    boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(0,
-    max(means+8*sds)),frame=FALSE)
+    boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(0,max(means+8*sds)),frame=FALSE)
     text(1:6, means+5*sds, paste("mu=",means))
     text(1:6, means-5*sds, paste("sd=",sds))
+    title(main=paste("Name=: ",masterlist$GAZETTED_NAME[i1], "  WBID:= ", masterlist$WATERBODY_IDENTIFIER[i1]))
     if(!missing(target))
     {
         abline(h=target,col="red")

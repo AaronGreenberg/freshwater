@@ -3,18 +3,18 @@ shinyServer(function(input, output){
 
 source("growth_tab1.R")
 print("Hi")
-
+kf <- 1.1
 dataInput <- reactive({
     straintype <- as.integer(input$straintype)
     ploidy <- as.integer(input$ploidy)
     age <- as.integer(input$age)
     
-    mainout <-main(input$wbid,input$lwts,input$kf,input$stockdensity,straintype,ploidy)
+    mainout <-main(input$wbid,input$lwts,kf,input$stockdensity,straintype,ploidy)
     print("ran")
     print(head(mainout))
     print("What's up")
-    sdentmp <-main3(input$wbid,input$lwts,input$kf,input$targ,straintype,ploidy,age)
-    maintargout <-main(input$wbid,input$lwts,input$kf,sdentmp$root,straintype,ploidy)
+    sdentmp <-main3(input$wbid,input$lwts,kf,input$targ,straintype,ploidy,age)
+    maintargout <-main(input$wbid,input$lwts,kf,sdentmp$root,straintype,ploidy)
 out=list(mainout=mainout,maintargout=maintargout,sdentmp=sdentmp$root)
 
 return(out)
@@ -25,7 +25,7 @@ output$mainPlot <- renderPlot({
     out <- dataInput()
     print("silly")
     print(head(out$mainout))
-fig1(out$mainout,input$stockdensity)
+fig1(out$mainout,input$wbid,input$stockdensity)
 
 })
 

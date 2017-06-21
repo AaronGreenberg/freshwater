@@ -31,13 +31,6 @@ shinyUI(fluidPage(theme=shinytheme("flatly"),
                       max =25,
                       value = 1),
 
-                    sliderInput("kf",
-                      "kf:",
-                      sep="",
-                      min = .999,
-                      max =25,
-                      value = 1.1),
-
           sliderInput("stockdensity",
                       "Stocked Density:",
                       sep="",
