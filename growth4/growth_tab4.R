@@ -4,7 +4,6 @@ library(mapdata)
 sden<-c(20,50,100,200,500)
 eda<-"2018/6/15"
 
-#main <- sden and eda fry and yearling 
 main <- function(sden=sden, eda=eda)
 {
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
@@ -99,7 +98,7 @@ lakepoints<-data.frame(X=haspclist$LONGITUDE,Y=haspclist$LATITUDE)
 EID=seq(1:nrow(haspclist))
 
 
-plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
+plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="",main="Fry")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
 cexy=inp$lt_fry[,stock]/10
 cols<-ifelse(inp$lt_fry[,stock]<25,"red",ifelse(inp$lt_fry[,stock]<35,"orange",ifelse(inp$lt_fry[,stock]<40,"green","lightsteelblue")))
@@ -124,7 +123,7 @@ lakepoints<-data.frame(X=haspclist$LONGITUDE,Y=haspclist$LATITUDE)
 EID=seq(1:nrow(haspclist))
 
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
-plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="")
+plot(lonlim,latlim,col="white",axes=F,xlab="",ylab="",main="Yearlings")
 map(database = "worldHires", xlim=lonlim, ylim=latlim,resolution = 0,fill=T,col='white',mar=rep(0.3,4),add=T,lwd=1)#make a first plot of the mapto define the range of the plot 
 cexy=inp$lt_fry[,stock]/10
 cols<-ifelse(inp$lt_ye[,stock]<25,"red",ifelse(inp$lt_ye[,stock]<35,"orange",ifelse(inp$lt_ye[,stock]<40,"green","lightsteelblue")))
