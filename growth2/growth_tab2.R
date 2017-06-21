@@ -1,12 +1,12 @@
 library('arules')
 library('lubridate')
 
-#Input from tool wbid <- 00209BRID
-wbid="00372KOTR" #Region and names instead of WBID
+## #Input from tool wbid <- 00209BRID
+## wbid="00372KOTR" #Region and names instead of WBID
 
-strain=2
-ploidy=3
-lfs=1
+## strain=2
+## ploidy=3
+## lfs=1
 
 main<-function(wbid,strain,ploidy,lfs)
 {
@@ -125,7 +125,7 @@ out=list(L_hat_ye=L_hat_ye,L_hat_fry=L_hat_fry)
 
 ###
 #Output 2 figures one for fry and one for yearlings
-plottab2 <- function(L)
+plottab2 <- function(L,wbid)
 {
     age=seq(2,6)
 par(mfrow=c(1,2))
@@ -154,5 +154,5 @@ my=min(c(m2b,m1b))
 }  
 #fix yaxis limits such that they are the same for each plot.                                         #sliding label
 # write a function that outputs csvs of L_hat_ye and L_hat_fry
-s=main(wbid,strain,ploidy,lfs)
-plottab2(s)
+## s=main(wbid,strain,ploidy,lfs)
+## plottab2(s)
