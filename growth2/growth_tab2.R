@@ -8,8 +8,9 @@ library('lubridate')
 ## ploidy=3
 ## lfs=1
 
-main<-function(wbid,strain,ploidy,lfs)
+main<-function(wbid,strain,ploidy)
 {
+lfs=1
 #read lakes list
 masterlist<-read.csv("RB_tool_master_list.csv")
 mainpars<-read.csv('model_17_mainpars.csv')

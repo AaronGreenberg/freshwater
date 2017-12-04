@@ -4,7 +4,8 @@ library('lubridate')
 
 
 mainpars<-read.csv('model_17_mainpars.csv')
-K<-mainpars[,1];Linf<-mainpars[,2]
+K<-mainpars[,1];
+Linf<-mainpars[,2]
 
 bet=rep(0,2)
 stn=rep(0,5)

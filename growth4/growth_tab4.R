@@ -1,16 +1,16 @@
 library(maps)
 library(mapdata)
 
-sden<-c(20,50,100,200,500)
-eda<-"2018/6/15"
+## sden<-c(20,50,100,200,500)
+## eda<-"2018/6/15"
 
-main <- function(sden=sden, eda=eda)
+main <- function(sden=sden, eda=eta)
 {
 haspclist<-read.csv("RB_haspc2017_master_list.csv")
 assessed<-scan('assessed_wbid.csv',what="character",skip=1)
 lakepars<-read.csv('model_17post_lakepars.csv')
 mainpars<-read.csv('model_17post_mainpars.csv')
-
+sden=as.numeric(sden)
 
 gnpars<-match(haspclist$WATERBODY_IDENTIFIER,assessed)
 vK=vLinf=vector(length=nrow(haspclist))
@@ -132,13 +132,13 @@ text(-122.768215,53.912015, "Prince George",cex=.5)
 points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=".",cex=3,col=cols)
 }
 
-s <- main(sden=sden,eda=eda)
-x11()
-plotfry(s,2)
-print("hum")
-x11()
-plotye(s,1)
-
+## s <- main(sden=sden,eda=eda)
+## x11()
+## plotfry(s,2)
+## print("hum")
+## x11()
+## plotye(s,1)
+## -
 ## print(lt_fry)
 ## print(lt_ye)
 

@@ -23,42 +23,24 @@ shinyUI(fluidPage(theme=shinytheme("flatly"),
                "2n" = 3,
                 "Multiple"=2
 ),inline=TRUE),
-
-          sliderInput("lwts",
-                      "Stocking Weight(g):",
-                      sep="",
-                      min = .999,
-                      max =25,
-                      value = 1),
+##           radioButtons("lfs", "LFS:",
+##              c("1" = 1,
+##                "2" = 2,
+##                 "3"=3,
+##                  "4"=4
+## ),inline=TRUE),
 
           sliderInput("stockdensity",
                       "Stocked Density:",
                       sep="",
                       min = 0.1,
                       max =1000,
-                      value = 50),
+                      value = 1000),
           
-radioButtons("age", "Age:",
-             c("2" = "2",
-               "3" = "3",
-               "4" = "4",
-               "5" = "5"
-),inline=TRUE),
-          sliderInput("targ",
-                      "Target Size:",
-                      sep="",
-                      min = 0.1,
-                      max =70,
-                      value = 11),
-
    textInput("wbid", "Water Body Id", "00372KOTR")),
     # Show a plot of the generated distribution
       mainPanel(
           tabsetPanel(type = "tabs",
-                      tabPanel("Age Dist", plotOutput("mainPlot")),
-                      tabPanel("Age Dist", tableOutput("mainTab")),
-                      tabPanel("Age Dist", plotOutput("inversePlot")),
-                      tabPanel("Age Dist", tableOutput("inverseTab"))
-
+                      tabPanel("Something", plotOutput("mainPlot"))
 )))))
 

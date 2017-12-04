@@ -45,7 +45,7 @@ tab1(out$maintargout)
 
 output$inversePlot <- renderPlot({
     out <- dataInput()
-    fig1(out$maintargout,out$sdentmp,input$targ)
+    fig1(out$maintargout,input$wbid,out$sdentmp,input$targ)
 
 })
 
