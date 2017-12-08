@@ -85,10 +85,10 @@ for(i in 1:length(eda))
 Linf_L <- (Linf*exp(ppt_post*map))/(1+bet_post[[lfs]]*drb+osp_post*dos)
 K_Lp <- K*exp(yef_post*fy+stn_post[[strain]]+ple_post[[ploidy]])
 L_hat<-matrix(data=0,nrow=length(Linf),ncol=length(eda))
-print("silly strain")
-print(strain)
-print(stn_post[[strain]])
-print(K_Lp)
+## print("silly strain")
+## print(strain)
+## print(stn_post[[strain]])
+## print(K_Lp)
 
 for(i in 1:length(eda))
 {
@@ -96,8 +96,8 @@ for(i in 1:length(eda))
 }
 age=seq(2,6)
 colnames(L_hat)<-paste0("age_",age)
-print("Silly idiot")
-print(head(L_hat))
+## print("Silly idiot")
+## print(head(L_hat))
 out=(L_hat)
 }
 
@@ -186,7 +186,7 @@ for(i in 1:length(eda))
 age=seq(2,6)
 colnames(L_hat)<-paste0("age_",age)
                                         #figure output
-print(head(L_hat))
+#print(head(L_hat))
     out=(L_hat)
     
 }
@@ -206,7 +206,7 @@ age=age-1
   z <- tryCatch(
         {
             
-            uniroot(f,c(0,10000),age)
+            uniroot(f,c(0,1000),age,tol=0.009)
         },
         error=function(cond) {
             message(paste("I have a bad feeling about this. \n"))
@@ -231,9 +231,9 @@ fig1 <- function(L_hat,wbid,density,target)
 {
     masterlist<-read.csv("RB_tool_master_list.csv")
     i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
-    print("yo")
-    print("wbid")
-    print(wbid)
+    ## print("yo")
+    ## print("wbid")
+    ## print(wbid)
     means=round(apply(L_hat,2,mean),1)
     sds=round(apply(L_hat,2,sd),2)
     boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(0,max(means+8*sds)),frame=FALSE)
@@ -256,7 +256,7 @@ tab1 <- function(L_hat)
     qs=apply( L_hat , 2 ,quantile , probs=c(0.025,0.25,.5,0.75,0.975),na.rm=TRUE)
     qs <- rbind(qs,means)
     qs <- rbind(qs,sds)
-   print(qs)
+   #print(qs)
 }
 
 

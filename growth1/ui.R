@@ -24,6 +24,8 @@ shinyUI(fluidPage(theme=shinytheme("flatly"),
                 "Multiple"=2
 ),inline=TRUE),
 
+
+
           sliderInput("lwts",
                       "Stocking Weight(g):",
                       sep="",
@@ -50,8 +52,14 @@ radioButtons("age", "Age:",
                       min = 0.1,
                       max =70,
                       value = 11),
+   radioButtons("region", "Region:",
+             c("1" = 1,
+               "2" = 2,
+                "3"=3
+),inline=TRUE),
 
-   textInput("wbid", "Water Body Id", "00372KOTR")),
+   selectInput('wbid', 'Water Body Id',choices= read.csv("RB_haspc2017_master_list.csv", header = T)$WATERBODY_IDENTIFIER)),
+   #textInput("wbid", "Water Body Id", "00372KOTR")),
     # Show a plot of the generated distribution
       mainPanel(
           tabsetPanel(type = "tabs",

@@ -1,5 +1,5 @@
 library(shiny)
-shinyServer(function(input, output){
+shinyServer(function(input, output,session){
 
 source("growth_tab1.R")
 print("Hi")
@@ -8,6 +8,15 @@ dataInput <- reactive({
     straintype <- as.integer(input$straintype)
     ploidy <- as.integer(input$ploidy)
     age <- as.integer(input$age)
+
+    wbidlist <- read.csv("RB_haspc2017_master_list.csv", header = T)$WATERBODY_IDENTIFIER
+    regionlist <- read.csv("RB_haspc2017_master_list.csv", header = T)$Region
+    
+    ## input$AREA=5
+    print("Region")
+    print(input$region)
+    print(wbidlist[which(regionlist==input$region)])
+    updateSelectInput(session, 'wbid', choices = wbidlist[which(regionlist==input$region)])
     
     mainout <-main(input$wbid,input$lwts,kf,input$stockdensity,straintype,ploidy)
     print("ran")
