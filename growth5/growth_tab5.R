@@ -105,8 +105,8 @@ points(haspclist$LONGITUDE,haspclist$LATITUDE,pch=1,cex=1,col=cols)
 
 }
 
-s <- main(eda=eda,target=target)
-plots6ye(s)
-x11()
-plots6fry(s)
+## s <- main(eda=eda,target=target)
+## plots6ye(s)
+## x11()
+## plots6fry(s)
  
