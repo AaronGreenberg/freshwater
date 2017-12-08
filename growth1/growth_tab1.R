@@ -1,14 +1,14 @@
 library('arules')
-
+library('data.table')
 library('lubridate')
 rm(list=ls())
 
 main <- function(wbid,lwts,kf,sden,strain,ploidy)
 {            
 #read lakes list
-masterlist<-read.csv("RB_tool_master_list.csv")
-mainpars_post<-read.csv('model_17post_mainpars.csv')
-lakepars_post<-read.csv('model_17post_lakepars.csv')
+masterlist<-fread("RB_tool_master_list.csv",sep=",",data.table=FALSE)
+mainpars_post<-fread('model_17post_mainpars.csv',sep=",",data.table=FALSE)
+lakepars_post<-fread('model_17post_lakepars.csv',sep=",",data.table=FALSE)
 
  #parameters
 
@@ -38,7 +38,7 @@ yef_post<-mainpars_post$yef
 
 i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
 lake_area<-masterlist$AREA_HA[i1]
-assessed<-read.csv('assessed_wbid.csv',colClasses=c("character"))
+assessed<-fread('assessed_wbid.csv',colClasses=c("character"),sep=",",data.table=FALSE)
 i2=any(assessed==wbid)
 if(i2==TRUE)
 {i3=which(assessed==wbid);K<-lakepars_post[,i3];Linf<-lakepars_post[,(91+i3)]} else{K<-mainpars_post[,1];Linf<-mainpars_post[,2]}
@@ -46,7 +46,7 @@ if(i2==TRUE)
 
 
 L0=round(((lwts/(kf/100000))^(1/3)),0)/10 #converting weight in g to length in cm
-in_hatch=read.csv('inhatchery_results.csv')
+in_hatch=fread('inhatchery_results.csv',sep=",",data.table=FALSE)
 lwd=as.character(discretize(lwts,"fixed",categories = in_hatch$cat,labels=in_hatch$labs))
 ind=which(in_hatch$labs==lwd) #adding error around stocking size
 cv=ifelse(length(ind)==1,in_hatch$cv[ind],0.1)
@@ -196,11 +196,11 @@ colnames(L_hat)<-paste0("age_",age)
 
 main3 <-  function(wbid,lwts,kf,target,strain,ploidy,age)
 {
-    assessed<-read.csv('assessed_wbid.csv',colClasses=c("character"))
-    in_hatch=read.csv('inhatchery_results.csv')
-    masterlist<-read.csv("RB_tool_master_list.csv")
-    mainpars_post<-read.csv('model_17post_mainpars.csv')
-    lakepars_post<-read.csv('model_17post_lakepars.csv')
+    assessed<-fread('assessed_wbid.csv',colClasses=c("character"),sep=",",data.table=FALSE)
+    in_hatch=fread('inhatchery_results.csv',sep=",",data.table=FALSE)
+    masterlist<-fread("RB_tool_master_list.csv",sep=",",data.table=FALSE)
+    mainpars_post<-fread('model_17post_mainpars.csv',sep=",",data.table=FALSE)
+    lakepars_post<-fread('model_17post_lakepars.csv',sep=",",data.table=FALSE)
 age=age-1 
     
     f <- function(sden,age){mean(main2(wbid,lwts,kf,sden,strain,ploidy,assessed,in_hatch,masterlist,mainpars_post,lakepars_post)[,age])-target}
@@ -230,7 +230,7 @@ return(z)
 
 fig1 <- function(L_hat,wbid,density,target)
 {
-    masterlist<-read.csv("RB_tool_master_list.csv")
+    masterlist<-fread("RB_tool_master_list.csv",sep=",",data.table=FALSE)
     i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
     ## print("yo")
     ## print("wbid")
