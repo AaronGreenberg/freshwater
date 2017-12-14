@@ -34,8 +34,8 @@ dateInput("eta", "eta", value = NULL, min = NULL, max = NULL,
     # Show a plot of the generated distribution
       mainPanel(
           tabsetPanel(type = "tabs",
-                      tabPanel("Map Fry ", plotOutput("mainPlot1",width="100%")),
-                      tabPanel("Map Yearling ", plotOutput("mainPlot2",width="100%"))
-
+                      tabPanel("Map Fry ", plotOutput("mainPlot1",width="100%",click = "plot_click")),
+                      tabPanel("Map Yearling ", plotOutput("mainPlot2",width="100%",click = "plot_click")),
+                      tabPanel("Lake Clicked on", verbatimTextOutput("info"))
 )))))
 

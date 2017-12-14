@@ -1,6 +1,6 @@
 library(shiny)
 library(shinythemes)
-
+library(shinycssloaders)
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(theme=shinytheme("flatly"),
   # Application title
@@ -69,9 +69,9 @@ radioButtons("age", "Age:",
     # Show a plot of the generated distribution
       mainPanel(
           tabsetPanel(type = "tabs",
-                      tabPanel("Age Dist", plotOutput("mainPlot")),
+                      tabPanel("Age Dist", withSpinner(plotOutput("mainPlot"))),
                       tabPanel("Age Dist", tableOutput("mainTab")),
-                      tabPanel("Age Dist", plotOutput("inversePlot")),
+                      tabPanel("Age Dist", withSpinner(plotOutput("inversePlot"))),
                       tabPanel("Age Dist", tableOutput("inverseTab"))
 
 )))))
