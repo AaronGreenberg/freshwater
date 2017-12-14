@@ -26,9 +26,12 @@ output$mainPlot2 <- renderPlot({
 ,height = 600,width=600)
 
 output$info <- renderPrint({
-    # With base graphics, need to tell it what the x and y variables are.
-    nearPoints(mtcars, input$plot_click, xvar = "wt", yvar = "mpg")
-    # nearPoints() also works with hover and dblclick events
+                                        # With base graphics, need to tell it what the x and y variables are.
+    haspclist<-read.csv("RB_haspc2017_master_list.csv",stringsAsFactors=FALSE)
+    out <- nearPoints(haspclist, input$plot_click, xvar = "LONGITUDE", yvar = "LATITUDE")
+    print(out$WATERBODY_IDENTIFIER)
+    print(out$GAZETTED_NAME)
+
   })
     
 })
