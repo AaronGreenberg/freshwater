@@ -237,9 +237,12 @@ fig1 <- function(L_hat,wbid,density,target)
     ## print(wbid)
     means=round(apply(L_hat,2,mean),1)
     sds=round(apply(L_hat,2,sd),2)
+    print("hum")
     boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(0,max(means+8*sds)),frame=FALSE)
-    text(1:6, means+5*sds, paste("mu=",means))
-    text(1:6, means-5*sds, paste("sd=",sds))
+    points(1:length(means), means, pch = 23, cex = 0.75, bg = "red")
+
+    text(1:length(means), means+5*sds, paste("mu=",means))
+    text(1:length(means), means-5*sds, paste("sd=",sds))
     title(main=paste("Name=: ",masterlist$GAZETTED_NAME[i1], "  WBID:= ", masterlist$WATERBODY_IDENTIFIER[i1]))
     if(!missing(target))
     {
@@ -269,22 +272,22 @@ tab1 <- function(L_hat)
 
 #myres<-data.frame(age=age,means=means,sds=sds,qs=t(round(qs,1)))
                   
-## #Please include summaries shown on tab of the tool                  
-## #WBID _ Choose from Creation of drop down menu for region and name of lake
-## #Input from tool wbid <- 00209BRID
-## wbid="00372KOTR"
-## #Stocking size
-## #Input from tool lwts - stocking weight in g - 2
-## lwts=2
-## kf=1.1
-## #Stocking density
-## #Input from tool sum of numbers stocked - 1000 #stocking density unlike stocking numbers
-## sden<-3000
+#Please include summaries shown on tab of the tool                  
+#WBID _ Choose from Creation of drop down menu for region and name of lake
+#Input from tool wbid <- 00209BRID
+wbid="00372KOTR"
+#Stocking size
+#Input from tool lwts - stocking weight in g - 2
+lwts=2
+kf=1.1
+#Stocking density
+#Input from tool sum of numbers stocked - 1000 #stocking density unlike stocking numbers
+sden<-3000
 
 
-## #For ploidy: 3n=1,Multiple=2,2n=3
-## strain=2
-## ploidy=3
+#For ploidy: 3n=1,Multiple=2,2n=3
+strain=2
+ploidy=3
 
 ## #Strain and Ploidy input
 ## #Input from tool for strain and ploidy
@@ -306,11 +309,12 @@ tab1 <- function(L_hat)
 ## s=main(wbid,lwts,kf,s2$root,strain,ploidy)
 ## tab1(s$L_hat)
 
-## ## make it so that age three has mean 10
+## make it so that age three has mean 10
 ## s2=main3(wbid,lwts,kf,10,strain,ploidy,3)
 ## s=main(wbid,lwts,kf,s2$root,strain,ploidy)
-## tab1(s$L_hat)
-## fig1(s$L_hat,s2$root,10)
+## tab1(s)
+## print(head(s))
+## fig1(s,s2$root,10)
 
 ## ## make it so that age two has mean 9
 
