@@ -4,20 +4,24 @@ shinyServer(function(input, output,session){
 source("growth_tab1.R")
 print("Hi")
 kf <- 1.1
-dataInput <- reactive({
-    straintype <- as.integer(input$straintype)
-    ploidy <- as.integer(input$ploidy)
-    age <- as.integer(input$age)
-
+dataInputR <- reactive({
     wbidlist <- read.csv("RB_haspc2017_master_list.csv", header = T)$WATERBODY_IDENTIFIER
     regionlist <- read.csv("RB_haspc2017_master_list.csv", header = T)$Region
-    
+
     ## input$AREA=5
+    input$region
     print("Region")
     print(input$region)
     print(wbidlist[which(regionlist==input$region)])
     updateSelectInput(session, 'wbid', choices = wbidlist[which(regionlist==input$region)])
-    
+})
+
+  
+dataInput <- reactive({
+    t=dataInputR()#needed to make sure that we do not update the list unless the list has changed
+    straintype <- as.integer(input$straintype)
+    ploidy <- as.integer(input$ploidy)
+    age <- as.integer(input$age)
     mainout <-main(input$wbid,input$lwts,kf,input$stockdensity,straintype,ploidy)
     print("ran")
     print(head(mainout))
