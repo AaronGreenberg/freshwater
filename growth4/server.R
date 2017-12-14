@@ -25,6 +25,12 @@ output$mainPlot2 <- renderPlot({
 }
 ,height = 600,width=600)
 
+output$info <- renderPrint({
+    # With base graphics, need to tell it what the x and y variables are.
+    nearPoints(mtcars, input$plot_click, xvar = "wt", yvar = "mpg")
+    # nearPoints() also works with hover and dblclick events
+  })
+    
 })
 
 

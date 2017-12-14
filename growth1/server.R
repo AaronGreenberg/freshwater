@@ -1,4 +1,5 @@
 library(shiny)
+
 shinyServer(function(input, output,session){
 
 source("growth_tab1.R")
@@ -20,7 +21,6 @@ dataInput <- reactive({
     
     mainout <-main(input$wbid,input$lwts,kf,input$stockdensity,straintype,ploidy)
     print("ran")
-    print(head(mainout))
     print("What's up")
     sdentmp <-main3(input$wbid,input$lwts,kf,input$targ,straintype,ploidy,age)
     maintargout <-main(input$wbid,input$lwts,kf,sdentmp$root,straintype,ploidy)
@@ -32,8 +32,6 @@ return(out)
 
 output$mainPlot <- renderPlot({
     out <- dataInput()
-    print("silly")
-    print(head(out$mainout))
 fig1(out$mainout,input$wbid,input$stockdensity)
 
 })

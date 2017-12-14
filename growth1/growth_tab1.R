@@ -8,7 +8,8 @@ main <- function(wbid,lwts,kf,sden,strain,ploidy)
 masterlist<-read.csv("RB_tool_master_list.csv")
 mainpars_post<-read.csv('model_17post_mainpars.csv')
 lakepars_post<-read.csv('model_17post_lakepars.csv')
-
+assessed<-read.csv('assessed_wbid.csv',colClasses=c("character"))
+in_hatch=read.csv('inhatchery_results.csv')    
  #parameters
 
 bet_post<-new('list');
@@ -37,7 +38,7 @@ yef_post<-mainpars_post$yef
 
 i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
 lake_area<-masterlist$AREA_HA[i1]
-assessed<-read.csv('assessed_wbid.csv',colClasses=c("character"))
+
 i2=any(assessed==wbid)
 if(i2==TRUE)
 {i3=which(assessed==wbid);K<-lakepars_post[,i3];Linf<-lakepars_post[,(91+i3)]} else{K<-mainpars_post[,1];Linf<-mainpars_post[,2]}
@@ -45,7 +46,7 @@ if(i2==TRUE)
 
 
 L0=round(((lwts/(kf/100000))^(1/3)),0)/10 #converting weight in g to length in cm
-in_hatch=read.csv('inhatchery_results.csv')
+
 lwd=as.character(discretize(lwts,"fixed",categories = in_hatch$cat,labels=in_hatch$labs))
 ind=which(in_hatch$labs==lwd) #adding error around stocking size
 cv=ifelse(length(ind)==1,in_hatch$cv[ind],0.1)
@@ -200,7 +201,7 @@ main3 <-  function(wbid,lwts,kf,target,strain,ploidy,age)
     masterlist<-read.csv("RB_tool_master_list.csv")
     mainpars_post<-read.csv('model_17post_mainpars.csv')
     lakepars_post<-read.csv('model_17post_lakepars.csv')
-age=age-1 
+    age=age-1 
     
     f <- function(sden,age){mean(main2(wbid,lwts,kf,sden,strain,ploidy,assessed,in_hatch,masterlist,mainpars_post,lakepars_post)[,age])-target}
   z <- tryCatch(
@@ -231,9 +232,6 @@ fig1 <- function(L_hat,wbid,density,target)
 {
     masterlist<-read.csv("RB_tool_master_list.csv")
     i1=which(masterlist$WATERBODY_IDENTIFIER==wbid)
-    ## print("yo")
-    ## print("wbid")
-    ## print(wbid)
     means=round(apply(L_hat,2,mean),1)
     sds=round(apply(L_hat,2,sd),2)
     boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(0,max(means+8*sds)),frame=FALSE)
@@ -259,61 +257,3 @@ tab1 <- function(L_hat)
    #print(qs)
 }
 
-
-# plot(c(0,age),c(0,means),xlab="Age",ylab="Length (cm)",ylim=c(10,60),las=1,xlim=c(0.5,5),type='l',lwd=2)
-# lines(c(0,age),c(0,qs[2,]),lty=2)
-# lines(c(0,age),c(0,qs[3,]),lty=2)
-# lines(c(0,age),c(0,qs[1,]),lty=2,col="grey")
-# lines(c(0,age),c(0,qs[4,]),lty=2,col="grey")
-
-#myres<-data.frame(age=age,means=means,sds=sds,qs=t(round(qs,1)))
-                  
-## #Please include summaries shown on tab of the tool                  
-## #WBID _ Choose from Creation of drop down menu for region and name of lake
-## #Input from tool wbid <- 00209BRID
-## wbid="00372KOTR"
-## #Stocking size
-## #Input from tool lwts - stocking weight in g - 2
-## lwts=2
-## kf=1.1
-## #Stocking density
-## #Input from tool sum of numbers stocked - 1000 #stocking density unlike stocking numbers
-## sden<-3000
-
-
-## #For ploidy: 3n=1,Multiple=2,2n=3
-## strain=2
-## ploidy=3
-
-## #Strain and Ploidy input
-## #Input from tool for strain and ploidy
-## #Need the following comment:
-## #For strains: #Blackwater=1, Carp=2, Fraser Valley = 3, Gerrard=4, Multiple=5, Pennask=6
-
-
-## s=main(wbid,lwts,kf,sden,strain,ploidy)
-
-## fig1(s,sden)
-## tab1(s )
-
-## ## #main 3 does the inverse!
-
-
-
-## ## make it so that age 3 has mean size 14 cm
-## s2=main3(wbid,lwts,kf,14,strain,ploidy,3)
-## s=main(wbid,lwts,kf,s2$root,strain,ploidy)
-## tab1(s$L_hat)
-
-## ## make it so that age three has mean 10
-## s2=main3(wbid,lwts,kf,10,strain,ploidy,3)
-## s=main(wbid,lwts,kf,s2$root,strain,ploidy)
-## tab1(s$L_hat)
-## fig1(s$L_hat,s2$root,10)
-
-## ## make it so that age two has mean 9
-
-## s2=main3(wbid,lwts,kf,9,strain,ploidy,2)
-## s=main(wbid,lwts,kf,s2$root,strain,ploidy)
-## tab1(s$L_hat)
-## fig1(s$L_hat,s2$root,9)
