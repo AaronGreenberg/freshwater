@@ -1,12 +1,23 @@
+devtools::install_github("yutannihilation/gglabeledcontour")
 library('arules')
 library('lubridate')
+library('ggplot2')
+library('gglabeledcontour')
 
 
 
-mainpars<-read.csv('model_17_mainpars.csv')
-K<-mainpars[,1];
-Linf<-mainpars[,2]
+# mainpars<-read.csv('model_17_mainpars.csv')
+# K<-mainpars[,1];Linf<-mainpars[,2]
 
+sden<-c(20,50,100,200,500,1000)
+age <- 1
+
+main <- function(sden,age)
+    {
+
+
+Linf=57.9669
+K=0.286355
 bet=rep(0,2)
 stn=rep(0,5)
 ple=rep(0,3)
@@ -27,7 +38,7 @@ stn[5]<-0.085471247
 stn[6]<-0
 yef<-0.132252879
 
-sden<-c(20,50,100,200,500,1000)
+
 dos<-0
 strain=6
 ploidy=3
@@ -39,14 +50,12 @@ map=seq(400,1100,by=50)/1000
 gdd=seq(700,1100,by=50)/1000
 myvars<-expand.grid(sden,map,gdd)
 colnames(myvars)<-c('sden','map','gdd')
-#time since stocking
-#bullet for this time
 dtfry=3
-dtye=3
+dtye=2.7
 #fry
 lfs=1
 fy<-lfs-1
-drbfry<-((myvars$sden*L0[2]^2)/10^5)-0.0375 #density expressed in NL2
+drbfry<-((myvars$sden*L0[1]^2)/10^5)-0.0375 #density expressed in NL2
 Linf_Lfry <- (Linf*exp(ppt*(myvars$map-0.578)))/(1+bet[lfs]*drbfry+osp*dos)
 K_Lpfry <- K*exp(yef*fy+stn[strain]+ple[ploidy])
 L_hat_fry<- L0[1]*exp(-K_Lpfry*dtfry*myvars$gdd)+Linf_Lfry*(1-exp(-K_Lpfry*dtfry*myvars$gdd))
@@ -58,26 +67,47 @@ L_hat_fry<- L0[1]*exp(-K_Lpfry*dtfry*myvars$gdd)+Linf_Lfry*(1-exp(-K_Lpfry*dtfry
 lfs=2
 yf<-lfs-1
 drbye<-((myvars$sden*L0[2]^2)/10^5)-0.2
-Linf_Lye <- (Linf*exp(ppt*map))/(1+bet[lfs]*drbye+osp*dos)
+Linf_Lye <- (Linf*exp(ppt*(myvars$map-0.578)))/(1+bet[lfs]*drbye+osp*dos)
 K_Lpye <- K*exp(yef*fy+stn[strain]+ple[ploidy])
 L_hat_ye <- L0[2]*exp(-K_Lpye*dtye*myvars$gdd)+Linf_Lye*(1-exp(-K_Lpye*dtye*myvars$gdd))
 
-#Output 2 figures one for fry and one for yearlings
-library(ggplot2)
-test <- data.frame(
-  x = myvars$map,
-  y = myvars$gdd,
+
+
+
+
+
+mydata <- data.frame(
+  x = myvars$map*1000,
+  y = myvars$gdd*1000,
   w = myvars$sden,
-  z1 = L_hat_fry,
-  z2=L_hat_ye)
-colors <- colorRampPalette(c("blue", "green", "yellow", "red"))(42)
-fryplot<-ggplot(test, aes(x=x, y=y, fill = z1)) + geom_tile()+ 
-  scale_fill_gradient(low = "white",high = "steelblue")+facet_wrap(~w)
-plot(fryplot)
+  z1 = L_hat_fry,z2=L_hat_ye)
 
-yrplot<-ggplot(test, aes(x=x, y=y, fill = z2)) + geom_tile()+ 
-  scale_fill_gradient(low = "white",high = "steelblue")+facet_wrap(~w)
-plot(yrplot)
+return(mydata)
+    }
 
+plot1 <- function(mydata)
+    {
+
+d1 <- ggplot(mydata, aes(x, y, z = z1)) +
+  geom_labeled_contour(colour="grey15")+facet_wrap(~w)
+
+d1+theme_bw()+
+  labs(title="Length at age 3+", x="Mean Annual Precipitation (in mm)", y="Annual Growing Degree Days")
+
+ggsave(file="fryplot_contour.jpg",height=15,width=20,unit="cm",dpi=500)
+
+
+d2 <- ggplot(mydata, aes(x, y, z = z2)) +
+  geom_labeled_contour(colour="grey15")+facet_wrap(~w)
+
+d2+theme_bw()+
+  labs(title="Length at age 3+", x="Mean Annual Precipitation (in mm)", y="Annual Growing Degree Days")
+plot(d2)
+
+}
+        
+## ggsave(file="yeplot_contour.jpg",height=15,width=20,unit="cm",dpi=500)
+s=main(sden=200,age=2)
+plot1(s)
 
 
