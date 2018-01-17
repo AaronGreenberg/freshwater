@@ -10,6 +10,11 @@ dataInputR <- reactive({
     regionlist <- read.csv("RB_haspc2017_master_list.csv", header = T)$Region
 
     ## input$AREA=5
+    wbidlist <- main$WATERBODY_IDENTIFIER
+    regionlist <- main$Region
+    nameslist <- main$GAZETTED_NAME
+    names(wbidlist) <- paste(wbidlist,nameslist,regionlist,sep="::-::")
+
     input$region
     print("Region")
     print(input$region)
