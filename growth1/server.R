@@ -11,13 +11,7 @@ dataInputR <- reactive({
     wbidlist <- main$WATERBODY_IDENTIFIER
     regionlist <- main$Region
     nameslist <- main$GAZETTED_NAME
-    names(wbidlist) <- paste(wbidlist,nameslist,regionlist,sep="::-::")
-
-    ## input$AREA=5
-    wbidlist <- main$WATERBODY_IDENTIFIER
-    regionlist <- main$Region
-    nameslist <- main$GAZETTED_NAME
-    names(wbidlist) <- paste(wbidlist,nameslist,regionlist,sep="::-::")
+    names(wbidlist) <- paste(wbidlist,nameslist,regionlist,sep="____")
 
     input$region
     print("Region")
