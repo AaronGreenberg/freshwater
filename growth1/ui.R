@@ -56,12 +56,9 @@ radioButtons("age", "Age:",
              c("1" = 1,
                "2" = 2,
                 "3"=3,
-                "4"=4,
                 "5"=5,
                 "6"=6,
-                "7a"=7,
-                "7b"=8,
-                 "8"=9
+                "8"=8
 ),inline=TRUE),
 
    selectInput('wbid', 'Water Body Id',choices= read.csv("RB_haspc2017_master_list.csv", header = T)$WATERBODY_IDENTIFIER)),
