@@ -234,7 +234,7 @@ fig1 <- function(L_hat,wbid,density,target)
     means=round(apply(L_hat,2,mean),1)
     sds=round(apply(L_hat,2,sd),2)
     print("hum")
-    boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(0,max(means+8*sds)),frame=FALSE)
+    boxplot(L_hat,las=1,xlab="Age",ylab="Length (cm)",ylim=c(0,max(means+8*sds)),outcex=.2,frame=FALSE)
     points(1:length(means), means, pch = 23, cex = 0.75, bg = "red")
 
     text(1:length(means), means+5*sds, paste("mu=",means))

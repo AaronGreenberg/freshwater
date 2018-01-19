@@ -6,13 +6,13 @@ source("growth_tab1.R")
 print("Hi")
 kf <- 1.1
     dataInputR <- reactive({
+
     main <- fread("RB_haspc2017_master_list.csv",sep=",",data.table=FALSE)
     wbidlist <- main$WATERBODY_IDENTIFIER
     regionlist <- main$Region
     nameslist <- main$GAZETTED_NAME
-    names(wbidlist) <- paste(wbidlist,nameslist,regionlist,sep="::-::")
-    
-    ## input$AREA=5
+    names(wbidlist) <- paste(wbidlist,nameslist,regionlist,sep="____")
+
     input$region
     print("Region")
     print(input$region)

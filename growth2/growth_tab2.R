@@ -140,18 +140,35 @@ m1b <- m1b-1
 m2b <- min(min(L$L_hat_ye[1,]),min(L$L_hat_ye[2,]),min(L$L_hat_ye[3,]),min(L$L_hat_ye[3,]),min(L$L_hat_ye[4,]),min(L$L_hat_ye[5,]))
 m2b <- m2b-1    
 my=min(c(m2b,m1b))
+sden<-c(20,50,100,200,500)
+    plot(age,L$L_hat_fry[1,],type='o',ylim=c(my,may),las=1,cex=.2,xlab="Age", ylab=" Fry",main="L_hat")
+    lines(age,L$L_hat_fry[2,],type='o',cex=.2)
+    lines(age,L$L_hat_fry[3,],type='o',cex=.2)
+    lines(age,L$L_hat_fry[4,],type='o',cex=.2)
+    lines(age,L$L_hat_fry[5,],type='o',cex=.2)
 
-  plot(age,L$L_hat_fry[1,],type='o',ylim=c(my,may),las=1,cex=.2,xlab="Age", ylab=" Fry",main="L_hat") 
-  lines(age,L$L_hat_fry[2,],type='o',cex=.2)
-  lines(age,L$L_hat_fry[3,],type='o',cex=.2)
-  lines(age,L$L_hat_fry[4,],type='o',cex=.2)
-  lines(age,L$L_hat_fry[5,],type='o',cex=.2)
+    scale=.6
+    shift=max((L$L_hat_fry[,5]-L$L_hat_fry[,4])*3/L$L_hat_fry[,4])
+    text(age[5]-shift,L$L_hat_fry[1,5]+.5,sden[1],cex=scale)
+    ## text(age[5]-shift,L$L_hat_fry[2,5],sden[2],cex=scale)
+    ## text(age[5]-shift,L$L_hat_fry[3,5],sden[3],cex=scale)
+    ## text(age[5]-shift,L$L_hat_fry[4,5],sden[4],cex=scale)
+    text(age[5]-shift,L$L_hat_fry[5,5]+.5,sden[5],cex=scale)
 
   plot(age,L$L_hat_ye[1,],type='o',ylim=c(my,may),las=1,cex=.2,xlab="Age", ylab="Yearling",main="L_hat") 
   lines(age,L$L_hat_ye[2,],type='o',cex=.2)
   lines(age,L$L_hat_ye[3,],type='o',cex=.2)
   lines(age,L$L_hat_ye[4,],type='o',cex=.2)
-  lines(age,L$L_hat_ye[5,],type='o',cex=.2)
+    lines(age,L$L_hat_ye[5,],type='o',cex=.2)
+    
+        shift=max((L$L_hat_ye[,5]-L$L_hat_ye[,4])*1/L$L_hat_ye[,4])
+    text(age[5]-shift,L$L_hat_ye[1,5]+.5,sden[1],cex=scale)
+    text(age[5]-shift,L$L_hat_ye[2,5]+.5,sden[2],cex=scale)
+    text(age[5]-shift,L$L_hat_ye[3,5]+.5,sden[3],cex=scale)
+    text(age[5]-shift,L$L_hat_ye[4,5]+.5,sden[4],cex=scale)
+    text(age[5]-shift,L$L_hat_ye[5,5]+.5,sden[5],cex=scale)
+
+    
 }  
 #fix yaxis limits such that they are the same for each plot.                                         #sliding label
 # write a function that outputs csvs of L_hat_ye and L_hat_fry
