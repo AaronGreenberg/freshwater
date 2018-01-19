@@ -33,12 +33,13 @@ shinyUI(fluidPage(theme=shinytheme("flatly"),
              c("1" = 1,
                "2" = 2,
                 "3"=3,
-                "4"=4,
+                "4E"="4E",
+                "4W"="4W",
                 "5"=5,
                 "6"=6,
-                "7a"=7,
-                "7b"=8,
-                 "8"=9
+                "7A"="7A",
+                "7B"="7B",
+                 "8"=8
 ),inline=TRUE),
 
          
