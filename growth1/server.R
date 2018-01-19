@@ -5,10 +5,13 @@ shinyServer(function(input, output,session){
 source("growth_tab1.R")
 print("Hi")
 kf <- 1.1
-dataInputR <- reactive({
-    wbidlist <- read.csv("RB_haspc2017_master_list.csv", header = T)$WATERBODY_IDENTIFIER
-    regionlist <- read.csv("RB_haspc2017_master_list.csv", header = T)$Region
-
+    dataInputR <- reactive({
+    main <- fread("RB_haspc2017_master_list.csv",sep=",",data.table=FALSE)
+    wbidlist <- main$WATERBODY_IDENTIFIER
+    regionlist <- main$Region
+    nameslist <- main$GAZETTED_NAME
+    names(wbidlist) <- paste(wbidlist,nameslist,regionlist,sep="::-::")
+    
     ## input$AREA=5
     input$region
     print("Region")
