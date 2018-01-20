@@ -141,7 +141,7 @@ m2b <- min(min(L$L_hat_ye[1,]),min(L$L_hat_ye[2,]),min(L$L_hat_ye[3,]),min(L$L_h
 m2b <- m2b-1    
 my=min(c(m2b,m1b))
 sden<-c(20,50,100,200,500)
-    plot(age,L$L_hat_fry[1,],type='o',ylim=c(my,may),las=1,cex=.2,xlab="Age", ylab=" Fry",main="L_hat")
+    plot(age,L$L_hat_fry[1,],type='o',ylim=c(my,may),las=1,cex=.2,xlab="Age", ylab=" Fry (cm) ",main="L_hat Fry")
     lines(age,L$L_hat_fry[2,],type='o',cex=.2)
     lines(age,L$L_hat_fry[3,],type='o',cex=.2)
     lines(age,L$L_hat_fry[4,],type='o',cex=.2)
@@ -155,7 +155,7 @@ sden<-c(20,50,100,200,500)
     ## text(age[5]-shift,L$L_hat_fry[4,5],sden[4],cex=scale)
     text(age[5]-shift,L$L_hat_fry[5,5]+.5,sden[5],cex=scale)
 
-  plot(age,L$L_hat_ye[1,],type='o',ylim=c(my,may),las=1,cex=.2,xlab="Age", ylab="Yearling",main="L_hat") 
+  plot(age,L$L_hat_ye[1,],type='o',ylim=c(my,may),las=1,cex=.2,xlab="Age", ylab="Yearling (cm) ",main="L_hat Yearling") 
   lines(age,L$L_hat_ye[2,],type='o',cex=.2)
   lines(age,L$L_hat_ye[3,],type='o',cex=.2)
   lines(age,L$L_hat_ye[4,],type='o',cex=.2)
