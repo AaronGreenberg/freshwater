@@ -161,7 +161,7 @@ sden<-c(20,50,100,200,500)
   lines(age,L$L_hat_ye[4,],type='o',cex=.2)
     lines(age,L$L_hat_ye[5,],type='o',cex=.2)
     
-        shift=max((L$L_hat_ye[,5]-L$L_hat_ye[,4])*1/L$L_hat_ye[,4])
+        shift=max((L$L_hat_ye[,5]-L$L_hat_ye[,4])*1.2/L$L_hat_ye[,4])
     text(age[5]-shift,L$L_hat_ye[1,5]+.5,sden[1],cex=scale)
     text(age[5]-shift,L$L_hat_ye[2,5]+.5,sden[2],cex=scale)
     text(age[5]-shift,L$L_hat_ye[3,5]+.5,sden[3],cex=scale)
