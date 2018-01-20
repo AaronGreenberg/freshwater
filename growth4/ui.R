@@ -10,15 +10,6 @@ shinyUI(fluidPage(theme=shinytheme("flatly"),
 #sden<-c(20,50,100,200,500)
   sidebarLayout(
       sidebarPanel(
-          radioButtons("straintype", "Strain:",
-             c(
-                 "Blackwater" = 1,
-                  "Carp" = 2,
-                  "Fraser Valley"=3,
-                  "Gerrard"=4,
-                  "Multiple"=5,
-                  "Pennask"=6
-),inline=TRUE),
           radioButtons("sden", "Stocking Density:",
              c("20" = 20,
                "50" = 50,
